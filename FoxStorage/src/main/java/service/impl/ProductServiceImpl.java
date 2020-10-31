@@ -3,45 +3,34 @@ package service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import dto.ProductDto;
 import model.Product;
+import repository.ProductRepository;
 import service.ProductService;
-import service.mapper.ModelMapper;
 import service.util.BaseServiceImpl;
 
-@Stateless
-public class ProductServiceImpl extends BaseServiceImpl<ProductDto, Product> implements ProductService{
-
-	@Inject
-	private ModelMapper mapper;
+public class ProductServiceImpl extends BaseServiceImpl implements ProductService{
 	
-	@PostConstruct
-	public void setRepository() {
-		super.setRepository(Product.class);
-	}
-
-	@Override
-    public ProductDto getInstance(Integer entityId) {
-    	return mapper.convert(getRepository().find(entityId));
+	@Inject
+	private ProductRepository repository;
+	
+    public ProductDto getProduct(Integer entityId) {
+    	return getMapper().convert(repository.find(entityId));
     }
     
-    @Override
-    public List<ProductDto> getAllInstances() {
-        List<Product> entityList = getRepository().findAll();
+    public List<ProductDto> getAllProduct() {
+        List<Product> entityList = repository.findAll();
         List<ProductDto> dtoList = new ArrayList<>();
         for (Product entity: entityList) {
-            dtoList.add(mapper.convert(entity));
+            dtoList.add(getMapper().convert(entity));
         }
         return dtoList;
     }
 
-    @Override
-    public Integer createInstance(ProductDto dto) {
-        Product entity = getRepository().create(mapper.convert(dto));
+    public Integer createProduct(ProductDto dto) {
+        Product entity = repository.create(getMapper().convert(dto));
         return entity.getId();
     }
 }

@@ -28,22 +28,22 @@ import model.BaseModel;
  * @param <I> id
  */
 @Stateless
-public class BaseRepositoryImpl<E extends BaseModel> implements BaseRepository<E> {
+public abstract class BaseRepositoryImpl<E extends BaseModel> implements BaseRepository<E> {
 
-	private Class<E> entityClass;
+	protected Class<E> entityClass;
+
+	public BaseRepositoryImpl(Class<E> entityClass) {
+		super();
+		this.entityClass = entityClass;
+	}
 
 	@Inject
 	private EntityManagerProvider entityManagerProvider;
 
-	@Override
-	public void setRepository(Class<E> classE) {
-    	this.entityClass = classE;
-    }
-
-	public EntityManager getEntityManager() {
+	protected EntityManager getEntityManager() {
 		return this.entityManagerProvider.getEntityManager();
 	}
-	
+
 	@Override
 	public E create(E entity) {
 		getEntityManager().persist(entity);
@@ -75,28 +75,27 @@ public class BaseRepositoryImpl<E extends BaseModel> implements BaseRepository<E
 		TypedQuery<E> allQuery = getEntityManager().createQuery(all);
 		return allQuery.getResultList();
 	}
-	
-    @Override
-    public List<E> createTypedQueryResultList(String namedQueryName, Map<String, String> queryParamMap) {
-        TypedQuery<E> query = getEntityManager().createNamedQuery(namedQueryName, entityClass);
-        for (Entry<String, String> entry : queryParamMap.entrySet()) {
+
+	protected List<E> createTypedQueryResultList(String namedQueryName, Map<String, String> queryParamMap) {
+		TypedQuery<E> query = getEntityManager().createNamedQuery(namedQueryName, entityClass);
+		for (Entry<String, String> entry : queryParamMap.entrySet()) {
 			query.setParameter(entry.getKey(), entry.getValue());
 		}
-        List<E> result = query.getResultList();
-        if(result.isEmpty()){
-            return new ArrayList<>();
-        }else{
-            return result;
-        }
-    }
-    
-    @Override
-    public E createTypedQuerySingleResult(String namedQueryName, Map<String, String> queryParamMap) {
-        List<E> result = createTypedQueryResultList(namedQueryName, queryParamMap);
-        if(result.isEmpty()){
-            return null;
-        }else{
-            return result.get(0);
-        }
-    }
+		List<E> result = query.getResultList();
+		if (result.isEmpty()) {
+			return new ArrayList<>();
+		} else {
+			return result;
+		}
+	}
+
+	protected E createTypedQuerySingleResult(String namedQueryName, Map<String, String> queryParamMap) {
+		List<E> result = createTypedQueryResultList(namedQueryName, queryParamMap);
+		if (result.isEmpty()) {
+			return null;
+		} else {
+			return result.get(0);
+		}
+	}
+
 }

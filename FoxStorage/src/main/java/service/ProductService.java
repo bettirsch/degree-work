@@ -1,9 +1,14 @@
 package service;
 
+import java.util.List;
+
 import dto.ProductDto;
-import model.Product;
-import service.util.BaseService;
 
-public interface ProductService extends BaseService<ProductDto, Product>{
+public interface ProductService {
+	
+	ProductDto getProduct(Integer entityId);
 
+	List<ProductDto> getAllProduct();
+
+	Integer createProduct(ProductDto dto);
 }

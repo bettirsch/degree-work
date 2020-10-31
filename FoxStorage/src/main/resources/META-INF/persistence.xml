@@ -5,7 +5,7 @@
     <jta-data-source>java:/FoxDS</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
-      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
       <!--property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/-->
       <property name="eclipselink.deploy-on-startup" value="true" />
       <property name="hibernate.hbm2ddl.auto" value="create"/>

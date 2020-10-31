@@ -1,16 +1,16 @@
 package service.mapper;
 
-import javax.enterprise.context.Dependent;
 
 import org.mapstruct.Mapper;
 
 import dto.ImageDto;
 import dto.ProductDto;
+import dto.UserDto;
 import model.Image;
 import model.Product;
+import model.User;
 
 @Mapper(componentModel = "cdi")
-@Dependent
 public interface ModelMapper{
 
 	ImageDto convert(Image entity);
@@ -20,5 +20,9 @@ public interface ModelMapper{
 	ProductDto convert(Product entity);
 
 	Product convert(ProductDto dto);
+	
+	User convert(UserDto dto);
+	
+	UserDto convert(User entity);
 	
 }
