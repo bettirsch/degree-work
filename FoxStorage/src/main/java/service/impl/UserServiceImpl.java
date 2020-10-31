@@ -5,6 +5,8 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import dto.UserDto;
 import exception.NotAuthException;
 import model.User;
@@ -20,19 +22,19 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 
 	@Override
 	public UserDto validateUser(String email, String password) throws NotAuthException {
-		return null;
+		String lowerCaseEmail = validateAndLowerCaseEmail(email);
+		User findedUser = repository.findByEmail(lowerCaseEmail);
+		if (findedUser == null || !BCrypt.checkpw(password, findedUser.getPassword())) {
+			throw new NotAuthException("Invalid email/password");
+		}
+		return getMapper().convert(findedUser);
 	}
 
 	@Override
 	public UserDto registerUser(UserDto userDto) throws NotAuthException {
-		Pattern pattern = Pattern.compile("^(.+)@(.+)$");
-		if (userDto.getEmail() != null) {
-			userDto.setEmail(userDto.getEmail().toLowerCase());
-		}
-		if (!pattern.matcher(userDto.getEmail()).matches()) {
-			throw new NotAuthException("Invalid email format");
-		}
-		
+		userDto.setEmail(validateAndLowerCaseEmail(userDto.getEmail()));
+		String hashedPassword = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt(10));
+		userDto.setPassword(hashedPassword);
 		Long count = repository.getCountByEmail(userDto.getEmail());
 		if (count > 0) {
 			throw new NotAuthException("Email already in use");
@@ -40,5 +42,13 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		User convertedUser = getMapper().convert(userDto);
 		User createdUser = repository.create(convertedUser);
 		return getMapper().convert(createdUser);
+	}
+
+	private String validateAndLowerCaseEmail(String email) {
+		Pattern pattern = Pattern.compile("^(.+)@(.+)$");
+		if (email == null || !pattern.matcher(email).matches()) {
+			throw new NotAuthException("Invalid email format");
+		}
+		return email.toLowerCase();
 	}
 }

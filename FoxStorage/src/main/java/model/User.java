@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "user")
 @XmlRootElement
 @NamedQueries({
-	@NamedQuery(name="User.findByEmailAndPassword", query="SELECT u FROM User u WHERE u.email = :email AND u.password = :password"),
+	@NamedQuery(name="User.findByEmail", query="SELECT u FROM User u WHERE u.email = :email"),
 	@NamedQuery(name="User.countByEmail", query = "SELECT COUNT(u) FROM User u WHERE u.email = :email")})
 public class User extends BaseModel implements Serializable {
 
@@ -36,7 +36,7 @@ public class User extends BaseModel implements Serializable {
 	@Column(name = "email", columnDefinition = "VARCHAR(250) NOT NULL")
 	private String email;
 	
-	@Column(name = "password", columnDefinition = "CHAR(32) NOT NULL")
+	@Column(name = "password", columnDefinition = "VARCHAR(250) NOT NULL")
 	private String password;
 
 	@ManyToMany(mappedBy = "users")

@@ -7,7 +7,7 @@ import repository.util.BaseRepository;
 
 public interface UserRepository extends BaseRepository<User> {
 	
-	User findByEmailAndPassword(String email, String password) throws NotAuthorizedException;
+	User findByEmail(String email) throws NotAuthorizedException;
 
 	Long getCountByEmail(String email);  
 }

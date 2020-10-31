@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.NotAuthorizedException;
 
-import exception.NotAuthException;
 import model.User;
 import repository.UserRepository;
 import repository.util.BaseRepositoryImpl;
@@ -19,19 +18,14 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User> implements User
 
 	@Override
 	public User create(User entity) {
-		try {
-			return super.create(entity);
-		} catch (Exception e) {
-			throw new NotAuthException("Invalid details. Failed to create account");
-		}
+		return super.create(entity);
 	}
 
 	@Override
-	public User findByEmailAndPassword(String email, String password) throws NotAuthorizedException {
+	public User findByEmail(String email) throws NotAuthorizedException {
 		Map<String, String> queryParamMap = new HashMap<>();
 		queryParamMap.put("email", email);
-		queryParamMap.put("password", password);
-		User findedUser = createTypedQuerySingleResult("User.findByEmailAndPassword", queryParamMap);
+		User findedUser = createTypedQuerySingleResult("User.findByEmail", queryParamMap);
 		return findedUser;
 	}
 
