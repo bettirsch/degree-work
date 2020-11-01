@@ -2,15 +2,15 @@ package webservice.impl;
 
 import java.util.List;
 
-import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
 
 import dto.ProductDto;
 import service.ProductService;
 import webservice.ProductResource;
 
-@Stateless
+@Transactional
 public class ProductResourceImpl implements ProductResource{
 
 	@Inject

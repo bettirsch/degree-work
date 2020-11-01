@@ -2,7 +2,9 @@ package webservice.impl;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import dto.LoginDto;
 import dto.UserDto;
@@ -18,20 +20,20 @@ public class UserResourceImpl implements UserResource{
 	@Override
 	public Response registerUser(UserDto userDto) {
 		try {
-			UserDto createdUser = userService.registerUser(userDto);
-			return Response.status(Response.Status.OK).entity(createdUser).build();
+			String token = userService.registerUser(userDto);
+			return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + token).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+			return Response.status(Status.UNAUTHORIZED).entity(e.getMessage()).build();
 		}
 	}
 
 	@Override
 	public Response loginUser(LoginDto loginDto) {
 		try {
-			UserDto validatedUser = userService.validateUser(loginDto.getEmail(), loginDto.getPassword());
-			return Response.status(Response.Status.OK).entity(validatedUser).build();
+			String token = userService.validateUser(loginDto.getEmail(), loginDto.getPassword());
+			return Response.ok().header("AUTHORIZATION", "Bearer " + token).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+			return Response.status(Status.UNAUTHORIZED).entity(e.getMessage()).build();
 		}
 	}
 	

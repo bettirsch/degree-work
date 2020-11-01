@@ -1,5 +1,8 @@
 package service.impl;
 
+import java.security.Key;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
@@ -9,8 +12,11 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import dto.UserDto;
 import exception.NotAuthException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import model.User;
 import repository.UserRepository;
+import security.KeyGen;
 import service.UserService;
 import service.util.BaseServiceImpl;
 
@@ -21,17 +27,17 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	private UserRepository repository;
 
 	@Override
-	public UserDto validateUser(String email, String password) throws NotAuthException {
+	public String validateUser(String email, String password) throws NotAuthException {
 		String lowerCaseEmail = validateAndLowerCaseEmail(email);
 		User findedUser = repository.findByEmail(lowerCaseEmail);
 		if (findedUser == null || !BCrypt.checkpw(password, findedUser.getPassword())) {
 			throw new NotAuthException("Invalid email/password");
 		}
-		return getMapper().convert(findedUser);
+		return generateJWTToken(findedUser);
 	}
 
 	@Override
-	public UserDto registerUser(UserDto userDto) throws NotAuthException {
+	public String registerUser(UserDto userDto) throws NotAuthException {
 		userDto.setEmail(validateAndLowerCaseEmail(userDto.getEmail()));
 		String hashedPassword = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt(10));
 		userDto.setPassword(hashedPassword);
@@ -41,7 +47,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		}
 		User convertedUser = getMapper().convert(userDto);
 		User createdUser = repository.create(convertedUser);
-		return getMapper().convert(createdUser);
+		return generateJWTToken(createdUser);
 	}
 
 	private String validateAndLowerCaseEmail(String email) {
@@ -51,4 +57,17 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		}
 		return email.toLowerCase();
 	}
+
+	private String generateJWTToken(User user) {
+		Calendar cal = Calendar.getInstance(Locale.GERMANY);
+        Calendar cal1 = Calendar.getInstance(Locale.GERMANY);
+        cal1.setTime(cal.getTime());
+        cal1.add(Calendar.MINUTE, 10);
+		Key secretKey = KeyGen.getKey();
+		String token = Jwts.builder().signWith(SignatureAlgorithm.HS256, secretKey).setIssuedAt(cal.getTime())
+				.setExpiration(cal1.getTime()).claim("userId", user.getId()).compact();
+		return token;
+
+	}
+
 }

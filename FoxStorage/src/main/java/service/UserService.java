@@ -5,8 +5,8 @@ import exception.NotAuthException;
 
 public interface UserService {
 
-	UserDto validateUser(String email, String password) throws NotAuthException;
+	String validateUser(String email, String password) throws NotAuthException;
 	
-	UserDto registerUser(UserDto userDto) throws NotAuthException;
+	String registerUser(UserDto userDto) throws NotAuthException;
 	
 }
