@@ -1,19 +1,13 @@
 package dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import model.Role;
-import utils.enums.UserRoles;
-
-public class UserDto extends BaseDto {
+public class UserDtoRegister extends BaseDto {
 
 	private String username;
 	private String firstName;
 	private String middleName;
 	private String lastName;
 	private String email;
-	private List<UserRoles> roles;
+	private String password;
 
 	public String getUsername() {
 		return username;
@@ -55,16 +49,11 @@ public class UserDto extends BaseDto {
 		this.email = email;
 	}
 
-	public List<UserRoles> getRoles() {
-		return roles;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setRoles(List<Role> roles) {
-		List<UserRoles> userRoles = new ArrayList<>();
-		for (Role role : roles) {
-			userRoles.add(role.getRoleName());
-		}
-		this.roles = userRoles;
+	public void setPassword(String password) {
+		this.password = password;
 	}
-	
 }

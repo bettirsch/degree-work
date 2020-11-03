@@ -32,3 +32,12 @@ INSERT INTO product(product_ean, product_name)VALUES('5999561696126', 'kozmetika
 INSERT INTO product(product_ean, product_name)VALUES('5999561695877', 'hajpánt csipke');
 INSERT INTO product(product_ean, product_name)VALUES('5999561696997', 'karkötő medállal');
 
+INSERT INTO user(email, first_name,	last_name, password, username) VALUES ('admin@gmail.com', 'Admin', 'Adminovich', '$2a$10$nYprTTsDAIsr/HrK9VJHrOXTqoIJtdDGPNRdDnhbjA9kXIpEq1CGO', 'admin');
+
+INSERT INTO role(description, role_name) VALUES ('all permissions allowed', 'ADMIN');
+INSERT INTO role(description, role_name) VALUES ('invoice, acquisition, contact, user managing', 'OFFICE_MANAGER');
+INSERT INTO role(description, role_name) VALUES ('order, contact, deliver managing', 'REGIONAL_REPRESENTATIVE');
+INSERT INTO role(description, role_name) VALUES ('storage, job managing', 'WAREHOUSE_EMPLOYEE');
+INSERT INTO role(description, role_name) VALUES ('only read', 'VISITOR');
+
+INSERT INTO role_user(role_ID, user_ID) VALUES ('1', '1');

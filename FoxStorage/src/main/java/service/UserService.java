@@ -1,12 +1,16 @@
 package service;
 
+import java.util.List;
+
 import dto.UserDto;
-import exception.NotAuthException;
+import dto.UserDtoRegister;
 
 public interface UserService {
 
-	String validateUser(String email, String password) throws NotAuthException;
+	String validateUser(String email, String password) throws RuntimeException;
 	
-	String registerUser(UserDto userDto) throws NotAuthException;
+	String registerUser(UserDtoRegister userDto) throws RuntimeException;
+	
+	List<UserDto> getAllUser();
 	
 }

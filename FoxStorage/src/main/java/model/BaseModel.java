@@ -17,7 +17,7 @@ import org.eclipse.persistence.annotations.AdditionalCriteria;
 
 
 @MappedSuperclass
-@AdditionalCriteria("this.deleted <> 'deleted'")
+@AdditionalCriteria("this.deleted = 0")
 public abstract class BaseModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

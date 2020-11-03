@@ -6,7 +6,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import security.Secured;
+import utils.enums.UserRoles;
+import utils.security.Secure;
 
 @Path("/product")
 public interface ProductResource {
@@ -14,7 +15,7 @@ public interface ProductResource {
 	// http://localhost:8080/FoxStorage/product/products
 	@GET
 	@Path("/products")
-	@Secured
+	@Secure(roleNames = UserRoles.WAREHOUSE_EMPLOYEE)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllProducts();
 	

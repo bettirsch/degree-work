@@ -1,5 +1,7 @@
 package webservice.impl;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.core.HttpHeaders;
@@ -8,6 +10,7 @@ import javax.ws.rs.core.Response.Status;
 
 import dto.LoginDto;
 import dto.UserDto;
+import dto.UserDtoRegister;
 import service.UserService;
 import webservice.UserResource;
 
@@ -18,7 +21,7 @@ public class UserResourceImpl implements UserResource{
 	private UserService userService;
 	
 	@Override
-	public Response registerUser(UserDto userDto) {
+	public Response registerUser(UserDtoRegister userDto) {
 		try {
 			String token = userService.registerUser(userDto);
 			return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + token).build();
@@ -34,6 +37,16 @@ public class UserResourceImpl implements UserResource{
 			return Response.ok().header("AUTHORIZATION", "Bearer " + token).build();
 		} catch (Exception e) {
 			return Response.status(Status.UNAUTHORIZED).entity(e.getMessage()).build();
+		}
+	}
+
+	@Override
+	public Response allUser() {
+		try {
+			List<UserDto> users = userService.getAllUser();
+			return Response.ok().entity(users).build();
+		} catch (Exception e) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
 		}
 	}
 	

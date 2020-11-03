@@ -1,8 +1,5 @@
 package repository.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.persistence.TypedQuery;
 import javax.ws.rs.NotAuthorizedException;
 
@@ -17,16 +14,8 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User> implements User
 	}
 
 	@Override
-	public User create(User entity) {
-		return super.create(entity);
-	}
-
-	@Override
 	public User findByEmail(String email) throws NotAuthorizedException {
-		Map<String, String> queryParamMap = new HashMap<>();
-		queryParamMap.put("email", email);
-		User findedUser = createTypedQuerySingleResult("User.findByEmail", queryParamMap);
-		return findedUser;
+		return createTypedQuerySingleResult("User.findByEmail", "email", email);
 	}
 
 	@Override

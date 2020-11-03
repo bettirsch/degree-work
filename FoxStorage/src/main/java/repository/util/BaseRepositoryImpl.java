@@ -7,6 +7,7 @@ package repository.util;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -76,9 +77,9 @@ public abstract class BaseRepositoryImpl<E extends BaseModel> implements BaseRep
 		return allQuery.getResultList();
 	}
 
-	protected List<E> createTypedQueryResultList(String namedQueryName, Map<String, String> queryParamMap) {
+	protected List<E> createTypedQueryResultList(String namedQueryName, Map<String, Object> queryParamMap) {
 		TypedQuery<E> query = getEntityManager().createNamedQuery(namedQueryName, entityClass);
-		for (Entry<String, String> entry : queryParamMap.entrySet()) {
+		for (Entry<String, Object> entry : queryParamMap.entrySet()) {
 			query.setParameter(entry.getKey(), entry.getValue());
 		}
 		List<E> result = query.getResultList();
@@ -88,14 +89,26 @@ public abstract class BaseRepositoryImpl<E extends BaseModel> implements BaseRep
 			return result;
 		}
 	}
-
-	protected E createTypedQuerySingleResult(String namedQueryName, Map<String, String> queryParamMap) {
+	
+	protected List<E> createTypedQueryResultList(String namedQueryName, String paramName, Object param) {
+		Map<String, Object> queryParamMap = new HashMap<>();
+		queryParamMap.put(paramName, param);
+		return createTypedQueryResultList(namedQueryName, queryParamMap);
+	}
+	
+	protected E createTypedQuerySingleResult(String namedQueryName, Map<String, Object> queryParamMap) {
 		List<E> result = createTypedQueryResultList(namedQueryName, queryParamMap);
 		if (result.isEmpty()) {
 			return null;
 		} else {
 			return result.get(0);
 		}
+	}
+	
+	protected E createTypedQuerySingleResult(String namedQueryName, String paramName, Object param) {
+		Map<String, Object> queryParamMap = new HashMap<>();
+		queryParamMap.put(paramName, param);
+		return createTypedQuerySingleResult(namedQueryName, queryParamMap);
 	}
 
 }

@@ -1,4 +1,4 @@
-package security;
+package utils.security;
 
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
