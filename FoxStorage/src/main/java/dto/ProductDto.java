@@ -31,6 +31,10 @@ public class ProductDto extends BaseDto {
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
-    
+
+	@Override
+	public String toString() {
+		return "ProductDto [id=" + id + ", productEan=" + productEan + ", productName=" + productName + "]";
+	}
     
 }

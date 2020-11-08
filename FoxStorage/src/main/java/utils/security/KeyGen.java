@@ -1,24 +1,27 @@
 package utils.security;
 
-import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 
 public class KeyGen {
 
 	private static String algorithm = "AES";
-    private static Key key = null;
+    private static SecretKey key = null;
 
-	public static Key getKey() {
+	public static SecretKey getSecretKey() throws NoSuchAlgorithmException{
+		if (key == null) {
+			setSecretKey();
+		}
 		return key;
 	}
 
-	public static void setKey(){
+	public static void setSecretKey() throws NoSuchAlgorithmException{
 		try {
 			KeyGen.key = KeyGenerator.getInstance(algorithm).generateKey();
 		} catch (NoSuchAlgorithmException e) {
-			//TODO log
+			throw e;
 		}
 	}
 

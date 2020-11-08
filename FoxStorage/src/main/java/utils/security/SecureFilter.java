@@ -36,7 +36,7 @@ public class SecureFilter implements ContainerRequestFilter {
 		try {
 			String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
 			token = authorizationHeader.substring("Bearer".length()).trim();
-			secretKey = KeyGen.getKey();
+			secretKey = KeyGen.getSecretKey();
 			Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
 		} catch (Exception e) {
 			requestContext.abortWith(Response.status(Response.Status.PROXY_AUTHENTICATION_REQUIRED)

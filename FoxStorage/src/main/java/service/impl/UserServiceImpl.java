@@ -1,12 +1,13 @@
 package service.impl;
 
-import java.security.Key;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+import javax.crypto.SecretKey;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
@@ -23,9 +24,11 @@ import repository.UserRepository;
 import service.UserService;
 import service.util.BaseServiceImpl;
 import utils.enums.UserRoles;
+import utils.logger.Loggable;
 import utils.security.KeyGen;
 
 @Transactional
+@Loggable
 public class UserServiceImpl extends BaseServiceImpl implements UserService {
 
 	@Inject
@@ -33,16 +36,16 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 
 	@Inject
 	private RoleRepository roleRepository;
-	
+
 	@Override
 	public List<UserDto> getAllUser() {
-        List<User> entityList = userRepository.findAll();
-        List<UserDto> dtoList = new ArrayList<>();
-        for (User entity: entityList) {
-            dtoList.add(getMapper().convert(entity));
-        }
-        return dtoList;
-    }
+		List<User> entityList = userRepository.findAll();
+		List<UserDto> dtoList = new ArrayList<>();
+		for (User entity : entityList) {
+			dtoList.add(getMapper().convert(entity));
+		}
+		return dtoList;
+	}
 
 	@Override
 	public String validateUser(String email, String password) throws RuntimeException {
@@ -81,17 +84,26 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 
 	private String generateJWTToken(String userRoles) {
 		Calendar cal = Calendar.getInstance(Locale.GERMANY);
-        Calendar cal1 = Calendar.getInstance(Locale.GERMANY);
-        cal1.setTime(cal.getTime());
-        cal1.add(Calendar.MINUTE, 10);
-		Key secretKey = KeyGen.getKey();
-		String token = Jwts.builder().signWith(SignatureAlgorithm.HS256, secretKey).setIssuedAt(cal.getTime())
-				.setExpiration(cal1.getTime()).claim("userRoles", userRoles).compact();
+		Calendar cal1 = Calendar.getInstance(Locale.GERMANY);
+		cal1.setTime(cal.getTime());
+		cal1.add(Calendar.MINUTE, 10);
+		SecretKey secretKey;
+		String token = "";
+		try {
+			secretKey = KeyGen.getSecretKey();
+			token = Jwts.builder().signWith(SignatureAlgorithm.HS256, secretKey).setIssuedAt(cal.getTime())
+					.setExpiration(cal1.getTime()).claim("userRoles", userRoles).compact();
+			if ("".equals(token)) {
+				throw new RuntimeException("Token not generated!");
+			}
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException("Token not generated!", e);
+		}
 		return token;
 
 	}
 
-	private String concatUserRoles(User user){
+	private String concatUserRoles(User user) {
 		String roles = "";
 		for (Role role : user.getRoles()) {
 			roles += role.getRoleName() + ";";

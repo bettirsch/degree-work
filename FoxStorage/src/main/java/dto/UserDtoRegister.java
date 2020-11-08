@@ -1,12 +1,17 @@
 package dto;
 
+import javax.validation.constraints.NotNull;
+
 public class UserDtoRegister extends BaseDto {
 
+	@NotNull
 	private String username;
 	private String firstName;
 	private String middleName;
 	private String lastName;
+	@NotNull
 	private String email;
+	@NotNull
 	private String password;
 
 	public String getUsername() {
@@ -56,4 +61,11 @@ public class UserDtoRegister extends BaseDto {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	@Override
+	public String toString() {
+		return "UserDtoRegister [username=" + username + ", firstName=" + firstName + ", middleName=" + middleName
+				+ ", lastName=" + lastName + ", email=" + email + "]";
+	}
+	
 }

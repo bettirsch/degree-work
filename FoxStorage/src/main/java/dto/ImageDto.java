@@ -41,5 +41,10 @@ public class ImageDto extends BaseDto {
 	public void setInactive(Boolean inactive) {
 		this.inactive = inactive;
 	}
+
+	@Override
+	public String toString() {
+		return "ImageDto [id=" + id + ", imageName=" + imageName + ", note=" + note + ", inactive=" + inactive + "]";
+	}
 	
 }

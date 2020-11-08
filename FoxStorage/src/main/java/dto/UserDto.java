@@ -3,15 +3,19 @@ package dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import model.Role;
 import utils.enums.UserRoles;
 
 public class UserDto extends BaseDto {
 
+	@NotNull
 	private String username;
 	private String firstName;
 	private String middleName;
 	private String lastName;
+	@NotNull
 	private String email;
 	private List<UserRoles> roles;
 
@@ -65,6 +69,12 @@ public class UserDto extends BaseDto {
 			userRoles.add(role.getRoleName());
 		}
 		this.roles = userRoles;
+	}
+
+	@Override
+	public String toString() {
+		return "UserDto [username=" + username + ", firstName=" + firstName + ", middleName=" + middleName
+				+ ", lastName=" + lastName + ", email=" + email + ", roles=" + roles + "]";
 	}
 	
 }

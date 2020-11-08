@@ -1,9 +1,13 @@
 package dto;
 
+import javax.validation.constraints.NotNull;
+
 public class LoginDto {
 
+	@NotNull
 	private String email;
 	
+	@NotNull
 	private String password;
 
 	public String getEmail() {
@@ -20,6 +24,11 @@ public class LoginDto {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	@Override
+	public String toString() {
+		return "LoginDto [email=" + email + ", password=" + password + "]";
 	}
 
 }

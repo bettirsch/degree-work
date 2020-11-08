@@ -1,5 +1,6 @@
 package webservice;
 
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -20,13 +21,13 @@ public interface UserResource {
 	@POST
 	@Path("/register")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response registerUser(UserDtoRegister userDto);
+	public Response registerUser(@Valid UserDtoRegister userDto);
 
 	// http://localhost:8080/FoxStorage/user/login
 	@POST
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response loginUser(LoginDto loginDto);
+	public Response loginUser(@Valid LoginDto loginDto);
 	
 	// http://localhost:8080/FoxStorage/user/login
 	@GET
