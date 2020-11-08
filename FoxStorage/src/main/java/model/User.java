@@ -42,6 +42,19 @@ public class User extends BaseModel implements Serializable {
 	@ManyToMany(mappedBy = "users")
 	private List<Role> roles;
 
+	public User() {
+		super();
+	}
+
+	public User(String username, String email, String password,
+			List<Role> roles) {
+		super();
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.roles = roles;
+	}
+
 	public String getUsername() {
 		return username;
 	}

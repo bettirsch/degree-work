@@ -1,6 +1,7 @@
 package dto;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class UserDtoRegister extends BaseDto {
 
@@ -9,9 +10,12 @@ public class UserDtoRegister extends BaseDto {
 	private String firstName;
 	private String middleName;
 	private String lastName;
+	
 	@NotNull
 	private String email;
+	
 	@NotNull
+	@Size(min=5)
 	private String password;
 
 	public String getUsername() {

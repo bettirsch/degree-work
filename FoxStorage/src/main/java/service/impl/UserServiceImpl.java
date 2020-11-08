@@ -22,6 +22,7 @@ import model.User;
 import repository.RoleRepository;
 import repository.UserRepository;
 import service.UserService;
+import service.mapper.ModelMapper;
 import service.util.BaseServiceImpl;
 import utils.enums.UserRoles;
 import utils.logger.Loggable;
@@ -36,6 +37,16 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 
 	@Inject
 	private RoleRepository roleRepository;
+
+	public UserServiceImpl() {
+		super();
+	}
+
+	public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, ModelMapper mapper) {
+		super(mapper);
+		this.userRepository = userRepository;
+		this.roleRepository = roleRepository;
+	}
 
 	@Override
 	public List<UserDto> getAllUser() {
