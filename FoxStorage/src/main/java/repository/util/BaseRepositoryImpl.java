@@ -32,6 +32,8 @@ import model.BaseModel;
 public abstract class BaseRepositoryImpl<E extends BaseModel> implements BaseRepository<E> {
 
 	protected Class<E> entityClass;
+	
+	public static String requestUser;
 
 	public BaseRepositoryImpl(Class<E> entityClass) {
 		super();
@@ -47,6 +49,8 @@ public abstract class BaseRepositoryImpl<E extends BaseModel> implements BaseRep
 
 	@Override
 	public E create(E entity) {
+		entity.setCreatedBy(requestUser);
+		entity.setModifiedBy(requestUser);
 		getEntityManager().persist(entity);
 		return entity;
 	}
@@ -63,6 +67,7 @@ public abstract class BaseRepositoryImpl<E extends BaseModel> implements BaseRep
 
 	@Override
 	public E update(E entity) {
+		entity.setModifiedBy(requestUser);
 		entity.setModifiedTs(new Date());
 		return getEntityManager().merge(entity);
 	}

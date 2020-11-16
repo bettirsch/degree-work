@@ -18,6 +18,7 @@ import javax.ws.rs.ext.Provider;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import repository.util.BaseRepositoryImpl;
 import utils.enums.UserRoles;
 
 @Provider
@@ -77,6 +78,7 @@ public class SecureFilter implements ContainerRequestFilter {
 			Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
 			String rolesInToken = claims.get("userRoles", String.class);
 			roleListInToken = Arrays.asList(rolesInToken.split(";"));
+			BaseRepositoryImpl.requestUser = claims.get("userName", String.class);
 		} catch (Exception e) {
 			throw new Exception();
 		}

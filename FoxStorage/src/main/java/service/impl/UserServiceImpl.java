@@ -65,7 +65,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		if (findedUser == null || !BCrypt.checkpw(password, findedUser.getPassword())) {
 			throw new RuntimeException("Invalid email/password");
 		}
-		return generateJWTToken(concatUserRoles(findedUser));
+		return generateJWTToken(concatUserRoles(findedUser), findedUser.getUsername());
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		User createdUser = userRepository.create(convertedUser);
 		role.addUser(createdUser);
 		roleRepository.update(role);
-		return generateJWTToken(UserRoles.VISITOR.toString());
+		return generateJWTToken(UserRoles.VISITOR.toString(), convertedUser.getUsername());
 	}
 
 	private String validateAndLowerCaseEmail(String email) {
@@ -93,7 +93,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		return email.toLowerCase();
 	}
 
-	private String generateJWTToken(String userRoles) {
+	private String generateJWTToken(String userRoles, String userName) {
 		Calendar cal = Calendar.getInstance(Locale.GERMANY);
 		Calendar cal1 = Calendar.getInstance(Locale.GERMANY);
 		cal1.setTime(cal.getTime());
@@ -103,7 +103,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		try {
 			secretKey = KeyGen.getSecretKey();
 			token = Jwts.builder().signWith(SignatureAlgorithm.HS256, secretKey).setIssuedAt(cal.getTime())
-					.setExpiration(cal1.getTime()).claim("userRoles", userRoles).compact();
+					.setExpiration(cal1.getTime()).claim("userRoles", userRoles).claim("userName", userName).compact();
 			if ("".equals(token)) {
 				throw new RuntimeException("Token not generated!");
 			}

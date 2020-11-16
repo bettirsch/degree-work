@@ -40,8 +40,8 @@ public class Image extends BaseModel implements Serializable{
     @Column(name = "inactive")
     private Boolean inactive;
     
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_ean", referencedColumnName = "product_ean")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_ID")
     private Product product;
 
     public Image() {

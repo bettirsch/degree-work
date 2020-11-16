@@ -27,7 +27,7 @@ public class Role extends BaseModel implements Serializable{
 
 	private static final long serialVersionUID = 4995712236937229725L;
 
-	@Column(name = "role_name", unique = true,
+	@Column(name = "role_name",
 			columnDefinition = "VARCHAR(30) NOT NULL")
 	@Enumerated(EnumType.STRING)
 	private UserRoles roleName;

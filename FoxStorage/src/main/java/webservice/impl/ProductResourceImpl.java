@@ -25,4 +25,25 @@ public class ProductResourceImpl implements ProductResource{
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Err").build();
 		}
 	}
+
+	@Override
+	public Response createProduct(ProductDto dto) {
+		try {
+			Integer createdProductId = productService.createProduct(dto);
+			return Response.status(Response.Status.OK).entity(createdProductId).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Err").build();
+		}
+	}
+
+	@Override
+	public Response getProduct(Integer id) {
+		try {
+			ProductDto findedProductDto = productService.getProduct(id);
+			return Response.status(Response.Status.OK).entity(findedProductDto).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Err").build();
+		}
+	}
+
 }

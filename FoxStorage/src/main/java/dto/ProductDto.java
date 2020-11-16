@@ -1,12 +1,18 @@
 package dto;
 
+import utils.enums.MeasuringUnit;
+
 public class ProductDto extends BaseDto {
 
 	private Integer id;
 	
     private String productEan;
+    
+    private String itemNr;
 
     private String productName;
+    
+    private MeasuringUnit measuringUnit;
 
 	public Integer getId() {
 		return id;
@@ -24,12 +30,28 @@ public class ProductDto extends BaseDto {
 		this.productEan = productEan;
 	}
 
+	public String getItemNr() {
+		return itemNr;
+	}
+
+	public void setItem_nr(String itemNr) {
+		this.itemNr = itemNr;
+	}
+
 	public String getProductName() {
 		return productName;
 	}
 
 	public void setProductName(String productName) {
 		this.productName = productName;
+	}
+
+	public MeasuringUnit getMeasuringUnit() {
+		return measuringUnit;
+	}
+
+	public void setMeasuringUnit(MeasuringUnit measuringUnit) {
+		this.measuringUnit = measuringUnit;
 	}
 
 	@Override

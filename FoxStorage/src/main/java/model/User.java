@@ -21,22 +21,28 @@ public class User extends BaseModel implements Serializable {
 
 	private static final long serialVersionUID = -7351729135012380019L;
 
-	@Column(name = "username", columnDefinition = "VARCHAR(10) NOT NULL")
+	@Column(name = "username",
+			columnDefinition = "VARCHAR(10) NOT NULL")
 	private String username;
 
-	@Column(name = "first_name", columnDefinition = "VARCHAR(20) DEFAULT NULL")
+	@Column(name = "first_name",
+			columnDefinition = "VARCHAR(20) DEFAULT NULL")
 	private String firstName;
 
-	@Column(name = "middle_name", columnDefinition = "VARCHAR(20) DEFAULT NULL")
+	@Column(name = "middle_name",
+			columnDefinition = "VARCHAR(20) DEFAULT NULL")
 	private String middleName;
 
-	@Column(name = "last_name", columnDefinition = "VARCHAR(20) DEFAULT NULL")
+	@Column(name = "last_name",
+			columnDefinition = "VARCHAR(20) DEFAULT NULL")
 	private String lastName;
 	
-	@Column(name = "email", columnDefinition = "VARCHAR(250) NOT NULL")
+	@Column(name = "email",
+			columnDefinition = "VARCHAR(250) NOT NULL")
 	private String email;
 	
-	@Column(name = "password", columnDefinition = "VARCHAR(250) NOT NULL")
+	@Column(name = "password",
+			columnDefinition = "VARCHAR(250) NOT NULL")
 	private String password;
 
 	@ManyToMany(mappedBy = "users")
