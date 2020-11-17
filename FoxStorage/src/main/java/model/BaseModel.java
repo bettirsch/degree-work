@@ -1,6 +1,6 @@
 package model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -8,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
@@ -27,13 +25,11 @@ public abstract class BaseModel {
 
 	@Column(name = "CREATED_TS", updatable = false,
 			columnDefinition = "TIMESTAMP default CURRENT_TIMESTAMP")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdTs;
+	private LocalDateTime createdTs;
 
 	@Column(name = "MODIFIED_TS",
 			columnDefinition = "TIMESTAMP default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date modifiedTs;
+	private LocalDateTime modifiedTs;
 
 	@Column(name = "MODIFIED_BY",
 			columnDefinition = "VARCHAR(45) default 'admin'")
@@ -50,15 +46,6 @@ public abstract class BaseModel {
 	@Column(name = "DELETED", columnDefinition = "BIT default 0")
 	@NotNull
 	private boolean deleted;
-
-	public BaseModel() {
-		this.createdTs = new Date();
-		this.modifiedTs = new Date();
-		this.createdBy = "admin";
-		this.modifiedBy = "admin";
-		this.version = 0;
-		this.deleted = false;
-	}
 
 	public Integer getId() {
 		return id;
@@ -84,19 +71,19 @@ public abstract class BaseModel {
 		this.deleted = deleted;
 	}
 
-	public Date getCreatedTs() {
+	public LocalDateTime getCreatedTs() {
 		return createdTs;
 	}
 
-	public void setCreatedTs(Date createdTs) {
+	public void setCreatedTs(LocalDateTime createdTs) {
 		this.createdTs = createdTs;
 	}
 
-	public Date getModifiedTs() {
+	public LocalDateTime getModifiedTs() {
 		return modifiedTs;
 	}
 
-	public void setModifiedTs(Date modifiedTs) {
+	public void setModifiedTs(LocalDateTime modifiedTs) {
 		this.modifiedTs = modifiedTs;
 	}
 

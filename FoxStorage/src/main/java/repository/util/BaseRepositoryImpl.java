@@ -5,8 +5,8 @@
  */
 package repository.util;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +68,7 @@ public abstract class BaseRepositoryImpl<E extends BaseModel> implements BaseRep
 	@Override
 	public E update(E entity) {
 		entity.setModifiedBy(requestUser);
-		entity.setModifiedTs(new Date());
+		entity.setModifiedTs(LocalDateTime.now());
 		return getEntityManager().merge(entity);
 	}
 
