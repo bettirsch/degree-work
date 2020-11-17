@@ -1,9 +1,11 @@
 package utils.enums;
 
 public enum MeasuringUnit {
-	 PIECE("db"),
-	 PACKAGE("csg"),
-	 PAIR("pár");
+	 PIECE("darab"),
+	 PACKAGE("csomag"),
+	 PAIR("pár"),
+	 TRAIL("rekesz"),
+	 BOTTLE("üveg");
 	
 	   private String measuringUnit;
 	   

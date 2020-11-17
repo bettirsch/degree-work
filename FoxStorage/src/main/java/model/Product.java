@@ -14,7 +14,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import utils.enums.MeasuringUnit;
@@ -41,18 +40,9 @@ public class Product extends BaseModel implements Serializable{
     private String productName;
     
 	@Column(name = "measuring_unit",
-			columnDefinition = "VARCHAR(30) NOT NULL DEFAULT 'PIECE'")
+			columnDefinition = "VARCHAR(30) NOT NULL")
 	@Enumerated(EnumType.STRING)
-	private MeasuringUnit measuringUnit;
-	
-	@Column(name = "net_unit_price",
-			columnDefinition = "Decimal(10,2) default '27.00'")
-	private Double netUnitPrice;
-	
-	@Column(name = "vat_rate",
-			columnDefinition = "Decimal(10,2) default '27.00'")
-	@NotNull
-	private Double vatRate;
+	private MeasuringUnit baseMeasuringUnit;
 	
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Image> images;
@@ -60,6 +50,9 @@ public class Product extends BaseModel implements Serializable{
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<FormItem> formItems;
 
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private List<Packaging> packagings;
+    
     public Product() {
     }
     
@@ -87,28 +80,12 @@ public class Product extends BaseModel implements Serializable{
         this.productName = productName;
     }
 
-	public MeasuringUnit getMeasuringUnit() {
-		return measuringUnit;
+	public MeasuringUnit getBaseMeasuringUnit() {
+		return baseMeasuringUnit;
 	}
 
-	public void setMeasuringUnit(MeasuringUnit measuringUnit) {
-		this.measuringUnit = measuringUnit;
-	}
-
-	public Double getNetUnitPrice() {
-		return netUnitPrice;
-	}
-
-	public void setNetUnitPrice(Double netUnitPrice) {
-		this.netUnitPrice = netUnitPrice;
-	}
-
-	public Double getVatRate() {
-		return vatRate;
-	}
-
-	public void setVatRate(Double vatRate) {
-		this.vatRate = vatRate;
+	public void setBaseMeasuringUnit(MeasuringUnit baseMeasuringUnit) {
+		this.baseMeasuringUnit = baseMeasuringUnit;
 	}
 
 	public List<Image> getImages() {
