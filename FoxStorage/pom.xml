@@ -16,14 +16,21 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<org.mapstruct.version>1.3.0.Final</org.mapstruct.version>
 		<javaee-api.version>7.0</javaee-api.version>
+		<junit-platform.version>5.4.0</junit-platform.version>
 		<m2e.apt.activation>jdt_apt</m2e.apt.activation>
 	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>${junit-platform.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>${junit-platform.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/javax/javaee-api -->

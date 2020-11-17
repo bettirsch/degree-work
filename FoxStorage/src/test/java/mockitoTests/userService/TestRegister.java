@@ -1,9 +1,12 @@
 package mockitoTests.userService;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import dto.UserDtoRegister;
 import utils.enums.UserRoles;
@@ -11,19 +14,26 @@ import utils.enums.UserRoles;
 public class TestRegister extends UserServiceTest {
 
 	@Test
+	@DisplayName("Should generate a token after successfully register new user.")
 	public void registerUserSuccess() {
 		String returnedToken = registerUser(0, super.userDtoRegister);
 		assertEquals(false, returnedToken.isEmpty());
 	}
 	
-	@Test(expected = RuntimeException.class)
+	@Test
+	@DisplayName("Should throw exception during user registration, because of email already in use.")
 	public void registerUserEmailAlreadyInUse() {
-		registerUser(1, super.userDtoRegister);
+		assertThrows(RuntimeException.class, ()->{
+			registerUser(1, super.userDtoRegister);		
+		});
 	}
 	
-	@Test(expected = RuntimeException.class)
+	@Test
+	@DisplayName("Should throw exception during user validation, because of email already in use.")
 	public void registerUserInvalidEmail() {
-		registerUser(0, super.userDtoRegisterWithInvalidEmail);
+		assertThrows(RuntimeException.class, ()->{
+			registerUser(0, super.userDtoRegisterWithInvalidEmail);
+		});
 	}
 
 	private String registerUser(int countedEmails, UserDtoRegister userDtoRegister) {

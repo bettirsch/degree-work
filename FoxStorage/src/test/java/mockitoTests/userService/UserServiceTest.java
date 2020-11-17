@@ -3,7 +3,7 @@ package mockitoTests.userService;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
 
 import dto.UserDtoRegister;
@@ -34,7 +34,7 @@ public class UserServiceTest {
 	protected final static String HASHED_PASSWORD = "$2a$10$nYprTTsDAIsr/HrK9VJHrOXTqoIJtdDGPNRdDnhbjA9kXIpEq1CGO";
 	protected final static String USERNAME = "testUser";
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.userService = new UserServiceImpl(userRepository, roleRepository, mapper);
 		this.userEntity = setUserEntity();

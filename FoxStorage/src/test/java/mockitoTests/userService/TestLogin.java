@@ -1,28 +1,37 @@
 package mockitoTests.userService;
 
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 import model.User;
 
 public class TestLogin extends UserServiceTest {
 
 	@Test
+	@DisplayName("Should generate a token after successfully validate the user.")
 	public void validateUserSuccess() {
 		String returnedToken =
 				validateUser(EMAIL, PASSWORD, userEntity);
 		assertEquals(false, returnedToken.isEmpty());
 	}
 
-	@Test(expected = RuntimeException.class)
+	@Test
+	@DisplayName("Should throw exception during user validation, because of invalid email format.")
 	public void validateUserWrongEmailFormat() {
-		validateUser(INVALID_EMAIL, PASSWORD, userEntity);
+		assertThrows(RuntimeException.class, ()->{
+			validateUser(INVALID_EMAIL, PASSWORD, userEntity);
+		});
 	}
 	
-	@Test(expected = RuntimeException.class)
+	@Test
+	@DisplayName("Should throw exception during user validation, because of user not found.")
 	public void validateUserUserNotFound() {
-		validateUser(EMAIL, PASSWORD, null);
+		assertThrows(RuntimeException.class, ()->{
+			validateUser(EMAIL, PASSWORD, null);		
+		});
 	}
 
 	private String validateUser(String email, String password, User resultEntity) {

@@ -19,6 +19,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 
 import model.BaseModel;
 
@@ -48,6 +49,7 @@ public abstract class BaseRepositoryImpl<E extends BaseModel> implements BaseRep
 	}
 
 	@Override
+	@Transactional
 	public E create(E entity) {
 		entity.setCreatedBy(requestUser);
 		entity.setModifiedBy(requestUser);
@@ -66,6 +68,7 @@ public abstract class BaseRepositoryImpl<E extends BaseModel> implements BaseRep
 	}
 
 	@Override
+	@Transactional
 	public E update(E entity) {
 		entity.setModifiedBy(requestUser);
 		entity.setModifiedTs(LocalDateTime.now());
