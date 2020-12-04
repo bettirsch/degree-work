@@ -20,25 +20,29 @@ import utils.enums.TypeOfStreet;
 @Table(name = "address")
 public class Address extends BaseModel {
 
-	@Column(name = "name")
+	@Column(name = "country",
+			columnDefinition = "VARCHAR(30) NOT NULL DEFAULT 'Magyarország'")
 	private String country;
 
 	@Column(name = "zip_code")
+	@NotNull
 	private String zipCode;
 
 	@Column(name = "city")
+	@NotNull
 	private String city;
 
 	@Column(name = "street")
+	@NotNull
 	private String street;
 
 	@Column(name = "type_of_street",
 			columnDefinition = "VARCHAR(30) NOT NULL DEFAULT 'STREET'")
 	@Enumerated(EnumType.STRING)
-	@NotNull
 	private TypeOfStreet typeOfStreet;
 
 	@Column(name = "number")
+	@NotNull
 	private String number;
 
 	@Column(name = "floor")
@@ -47,7 +51,7 @@ public class Address extends BaseModel {
 	@Column(name = "door")
 	private String door;
 
-	@Column(name = "address_type", columnDefinition = "VARCHAR(30) NOT NULL DEFAULT 'BOTH'")
+	@Column(name = "address_type", columnDefinition = "VARCHAR(30) NOT NULL DEFAULT 'BILLING_AND_SHIPPING'")
 	@Enumerated(EnumType.STRING)
 	@NotNull
 	private AddressType addressType;
@@ -57,7 +61,7 @@ public class Address extends BaseModel {
 	private Partner partner;
 	
 	@OneToOne(mappedBy = "address")
-	private Site inventory;
+	private Facility facility;
 
 	public String getCountry() {
 		return country;
@@ -138,4 +142,13 @@ public class Address extends BaseModel {
 	public void setPartner(Partner partner) {
 		this.partner = partner;
 	}
+
+	public Facility getFacility() {
+		return facility;
+	}
+
+	public void setFacility(Facility facility) {
+		this.facility = facility;
+	}
+	
 }

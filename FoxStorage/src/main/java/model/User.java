@@ -15,11 +15,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "user")
 @XmlRootElement
 @NamedQueries({
-	@NamedQuery(name="User.findByEmail", query="SELECT u FROM User u WHERE u.email = :email"),
+	@NamedQuery(name=User.FIND_BY_EMAIL, query="SELECT u FROM User u WHERE u.email = :email"),
 	@NamedQuery(name="User.countByEmail", query = "SELECT COUNT(u) FROM User u WHERE u.email = :email")})
 public class User extends BaseModel implements Serializable {
 
 	private static final long serialVersionUID = -7351729135012380019L;
+	public static final String FIND_BY_EMAIL = "User.findByEmail";
+	public static final String COUNT_BY_EMAIL = "User.countByEmail";
 
 	@Column(name = "username",
 			columnDefinition = "VARCHAR(10) NOT NULL")

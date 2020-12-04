@@ -19,5 +19,6 @@ public interface BaseRepository<E extends BaseModel> {
     E find(Integer entityId);
     E find(E entity);
     E update(E entity);
+    void delete(E entity);
     List<E> findAll();
 }

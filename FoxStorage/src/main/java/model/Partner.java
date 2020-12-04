@@ -30,8 +30,8 @@ public class Partner extends BaseModel implements Serializable{
 	@Column(name = "bank_account_number")
 	private String bankAccountNumber;
 	
-	@Column(name = "form_type",
-			columnDefinition = "VARCHAR(30) NOT NULL DEFAULT 'VISITOR'")
+	@Column(name = "partner_type",
+			columnDefinition = "VARCHAR(30) NOT NULL")
 	@Enumerated(EnumType.STRING)
 	@NotNull
 	private PartnerType type;

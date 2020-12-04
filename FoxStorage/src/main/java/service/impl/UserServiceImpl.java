@@ -52,9 +52,9 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	public List<UserDto> getAllUser() {
 		List<User> entityList = userRepository.findAll();
 		List<UserDto> dtoList = new ArrayList<>();
-		for (User entity : entityList) {
+		entityList.stream().forEach(entity -> {
 			dtoList.add(getMapper().convert(entity));
-		}
+		});
 		return dtoList;
 	}
 

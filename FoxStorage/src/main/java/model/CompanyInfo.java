@@ -29,7 +29,7 @@ public class CompanyInfo extends BaseModel implements Serializable{
 	private List<Contact> contacts;
 
 	@OneToMany(mappedBy = "companyInfo")
-	private List<Site> sites;
+	private List<Facility> facilities;
 
 	public String getName() {
 		return name;
@@ -63,12 +63,12 @@ public class CompanyInfo extends BaseModel implements Serializable{
 		this.contacts = contacts;
 	}
 
-	public List<Site> getSites() {
-		return sites;
+	public List<Facility> getFacilities() {
+		return facilities;
 	}
 
-	public void setSites(List<Site> sites) {
-		this.sites = sites;
+	public void setFacilities(List<Facility> facilities) {
+		this.facilities = facilities;
 	}
 	
 }

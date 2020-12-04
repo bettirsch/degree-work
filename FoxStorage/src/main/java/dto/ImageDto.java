@@ -1,22 +1,12 @@
 package dto;
 
 public class ImageDto extends BaseDto {
-	
-	private Integer id;
 
 	private String imageName;
     
     private String note;
     
     private Boolean inactive;
-    
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public String getImageName() {
 		return imageName;
@@ -44,7 +34,7 @@ public class ImageDto extends BaseDto {
 
 	@Override
 	public String toString() {
-		return "ImageDto [id=" + id + ", imageName=" + imageName + ", note=" + note + ", inactive=" + inactive + "]";
+		return "ImageDto [imageName=" + imageName + ", note=" + note + ", inactive=" + inactive + "]";
 	}
 	
 }

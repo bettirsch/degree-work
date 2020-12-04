@@ -4,7 +4,7 @@ public enum FormType {
 	 ORDER("Megrendelés"),
 	 SHIPMENT("Szállítólevél"),
 	 INVOICE("Számla"),
-	 FACILITY("operátor");
+	 INVENTORY_MOVEMENT("Raktári mozgás");
 	
 	 private String formType;
 	   

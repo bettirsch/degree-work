@@ -1,8 +1,7 @@
 package utils.enums;
 
 public enum FormStatus {
-	 NEW("Új"),
-	 PROGRESS("Folyamatban"),
+	 UNDER_EDITING("Szerkesztés alatt"),
 	 FINISHED("Lezárt");
 	
 	 private String formStatus;

@@ -1,7 +1,6 @@
 package repository.impl;
 
 import javax.persistence.TypedQuery;
-import javax.ws.rs.NotAuthorizedException;
 
 import model.User;
 import repository.UserRepository;
@@ -14,13 +13,13 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User> implements User
 	}
 
 	@Override
-	public User findByEmail(String email) throws NotAuthorizedException {
-		return createTypedQuerySingleResult("User.findByEmail", "email", email);
+	public User findByEmail(String email){
+		return createTypedQuerySingleResult(User.FIND_BY_EMAIL, "email", email);
 	}
 
 	@Override
 	public Long getCountByEmail(String email) {
-		TypedQuery<Long> query = getEntityManager().createNamedQuery("User.countByEmail", Long.class);
+		TypedQuery<Long> query = getEntityManager().createNamedQuery(User.COUNT_BY_EMAIL, Long.class);
 		query.setParameter("email", email);
 		return query.getSingleResult();
 	}

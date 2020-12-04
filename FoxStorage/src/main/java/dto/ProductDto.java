@@ -1,26 +1,29 @@
 package dto;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+
 import utils.enums.MeasuringUnit;
 
 public class ProductDto extends BaseDto {
-
-	private Integer id;
 	
     private String productEan;
     
     private String itemNr;
 
+    @NotNull
     private String productName;
+
+    @NotNull
+    private MeasuringUnit baseMeasuringUnit;
     
-    private MeasuringUnit measuringUnit;
+    @NotNull
+    @DecimalMin(value = "0.01")
+    private Double baseNetUnitPrice;
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @NotNull
+    @DecimalMin(value = "0.00")
+    private Double baseVatRate;
 
 	public String getProductEan() {
 		return productEan;
@@ -46,17 +49,39 @@ public class ProductDto extends BaseDto {
 		this.productName = productName;
 	}
 
-	public MeasuringUnit getMeasuringUnit() {
-		return measuringUnit;
+	public MeasuringUnit getBaseMeasuringUnit() {
+		return baseMeasuringUnit;
 	}
 
-	public void setMeasuringUnit(MeasuringUnit measuringUnit) {
-		this.measuringUnit = measuringUnit;
+	public void setBaseMeasuringUnit(MeasuringUnit baseMeasuringUnit) {
+		this.baseMeasuringUnit = baseMeasuringUnit;
+	}
+
+	public Double getBaseNetUnitPrice() {
+		return baseNetUnitPrice;
+	}
+
+	public void setBaseNetUnitPrice(Double baseNetUnitPrice) {
+		this.baseNetUnitPrice = baseNetUnitPrice;
+	}
+
+	public Double getBaseVatRate() {
+		return baseVatRate;
+	}
+
+	public void setBaseVatRate(Double baseVatRate) {
+		this.baseVatRate = baseVatRate;
+	}
+
+	public void setItemNr(String itemNr) {
+		this.itemNr = itemNr;
 	}
 
 	@Override
 	public String toString() {
-		return "ProductDto [id=" + id + ", productEan=" + productEan + ", productName=" + productName + "]";
+		return "ProductDto [productEan=" + productEan + ", itemNr=" + itemNr + ", productName=" + productName
+				+ ", baseMeasuringUnit=" + baseMeasuringUnit + ", baseNetUnitPrice=" + baseNetUnitPrice
+				+ ", baseVatRate=" + baseVatRate + "]";
 	}
     
 }

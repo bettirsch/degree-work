@@ -16,12 +16,12 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import utils.enums.SiteType;
+import utils.enums.FacilityType;
 
 @Entity
-@Table(name = "site")
+@Table(name = "facility")
 @XmlRootElement
-public class Site extends BaseModel implements Serializable{
+public class Facility extends BaseModel implements Serializable{
 
 	private static final long serialVersionUID = 1965552310769134178L;
 
@@ -29,19 +29,22 @@ public class Site extends BaseModel implements Serializable{
 	@NotNull
 	private String name;
 	
-	@Column(name = "site_type",
+	@Column(name = "facility_type",
 			columnDefinition = "VARCHAR(30) NOT NULL DEFAULT 'SITE'")
 	@Enumerated(EnumType.STRING)
 	@NotNull
-	private SiteType siteType;
+	private FacilityType facilityType;
 	
 	@OneToOne
 	@JoinColumn(name = "address_ID")
 	private Address address;
 	
-	@OneToMany(mappedBy = "inventory", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "facility", fetch = FetchType.LAZY)
 	private List<InventoryItem> inventoryItems;
-
+	
+	@OneToMany(mappedBy = "facility", fetch = FetchType.LAZY)
+	private List<Form> forms;
+	
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_info_ID")
     private CompanyInfo companyInfo;
@@ -62,12 +65,20 @@ public class Site extends BaseModel implements Serializable{
 		this.inventoryItems = inventoryItems;
 	}
 
-	public SiteType getSiteType() {
-		return siteType;
+	public List<Form> getForms() {
+		return forms;
 	}
 
-	public void setSiteType(SiteType siteType) {
-		this.siteType = siteType;
+	public void setForms(List<Form> forms) {
+		this.forms = forms;
+	}
+
+	public FacilityType getFacilityType() {
+		return facilityType;
+	}
+
+	public void setFacilityType(FacilityType facilityType) {
+		this.facilityType = facilityType;
 	}
 
 	public Address getAddress() {
@@ -76,6 +87,14 @@ public class Site extends BaseModel implements Serializable{
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+
+	public CompanyInfo getCompanyInfo() {
+		return companyInfo;
+	}
+
+	public void setCompanyInfo(CompanyInfo companyInfo) {
+		this.companyInfo = companyInfo;
 	}
 	
 }

@@ -63,10 +63,16 @@ public abstract class BaseRepositoryImpl<E extends BaseModel> implements BaseRep
 	}
 
 	@Override
-	public E find(BaseModel entity) {
+	public E find(E entity) {
 		return getEntityManager().find(entityClass, entity);
 	}
 
+	@Override
+	@Transactional
+    public void delete(E entity) {
+    	getEntityManager().remove(entity);
+    }
+    
 	@Override
 	@Transactional
 	public E update(E entity) {

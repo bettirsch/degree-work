@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -30,6 +31,9 @@ public class Price extends BaseModel implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "packaging_ID")
 	private Packaging packaging;
+	
+	@OneToOne(mappedBy = "basePrice")
+	private Product product;
 
 	public Double getNetUnitPrice() {
 		return netUnitPrice;
@@ -54,5 +58,13 @@ public class Price extends BaseModel implements Serializable {
 	public void setPackaging(Packaging packaging) {
 		this.packaging = packaging;
 	}
-	
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+		
 }

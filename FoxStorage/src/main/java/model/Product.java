@@ -12,8 +12,11 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import utils.enums.MeasuringUnit;
@@ -37,19 +40,27 @@ public class Product extends BaseModel implements Serializable{
     private String itemNr;
 
     @Column(name = "product_name")
+    @NotNull
     private String productName;
     
-	@Column(name = "measuring_unit",
+	@Column(name = "base_measuring_unit",
 			columnDefinition = "VARCHAR(30) NOT NULL")
 	@Enumerated(EnumType.STRING)
 	private MeasuringUnit baseMeasuringUnit;
+	
+	@OneToOne
+	@JoinColumn(name = "base_price_id")
+	private Price basePrice;
 	
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Image> images;
     
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<FormItem> formItems;
-
+    
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private List<FormItem> inventoryItems;
+    
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Packaging> packagings;
     
@@ -88,6 +99,14 @@ public class Product extends BaseModel implements Serializable{
 		this.baseMeasuringUnit = baseMeasuringUnit;
 	}
 
+	public Price getBasePrice() {
+		return basePrice;
+	}
+
+	public void setBasePrice(Price basePrice) {
+		this.basePrice = basePrice;
+	}
+
 	public List<Image> getImages() {
         return images;
     }
@@ -104,9 +123,27 @@ public class Product extends BaseModel implements Serializable{
 		this.formItems = formItems;
 	}
 
+	public List<FormItem> getInventoryItems() {
+		return inventoryItems;
+	}
+
+	public void setInventoryItems(List<FormItem> inventoryItems) {
+		this.inventoryItems = inventoryItems;
+	}
+
+	public List<Packaging> getPackagings() {
+		return packagings;
+	}
+
+	public void setPackagings(List<Packaging> packagings) {
+		this.packagings = packagings;
+	}
+
 	@Override
 	public String toString() {
-		return "Product [id=" + super.getId() + "productEan=" + productEan + ", productName=" + productName + ", images=" + images + "]";
+		return "Product [productEan=" + productEan + ", itemNr=" + itemNr + ", productName=" + productName
+				+ ", baseMeasuringUnit=" + baseMeasuringUnit + ", images=" + images + ", formItems=" + formItems
+				+ ", inventoryItems=" + inventoryItems + ", packagings=" + packagings + ", getId()=" + getId() + "]";
 	}
 
 }

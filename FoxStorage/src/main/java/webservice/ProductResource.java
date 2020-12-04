@@ -1,5 +1,6 @@
 package webservice;
 
+import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -31,7 +32,7 @@ public interface ProductResource {
 	@Secure(roleNames = {UserRoles.WAREHOUSE_EMPLOYEE,
 			UserRoles.OFFICE_MANAGER})
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createProduct(ProductDto dto);
+	public Response createProduct(@Valid ProductDto dto);
 
 	// http://localhost:8080/FoxStorage/product/{id}
 	@GET

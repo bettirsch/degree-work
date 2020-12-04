@@ -34,7 +34,7 @@ public class LoggableInterceptor implements Serializable{
 		try {
 			ret = ic.proceed();
 		} catch (RuntimeException e) {
-			logger.error(e.getMessage());
+			logger.error(e.getMessage(), e);
 			throw e;
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);

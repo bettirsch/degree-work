@@ -1,12 +1,12 @@
 package utils.enums;
 
-public enum SiteType {
+public enum FacilityType {
 	SITE("telephely"),
 	HEADQUARTERS("székhely");
 	
 	private String siteType;
 	
-	SiteType(String siteType){
+	FacilityType(String siteType){
 		this.siteType = siteType;
 	}
 	

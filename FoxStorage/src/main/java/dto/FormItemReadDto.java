@@ -1,77 +1,48 @@
-package model;
+package dto;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import utils.enums.MeasuringUnit;
 
-@Entity
-@Table(name = "form_item")
-@XmlRootElement
-public class FormItem extends BaseModel implements Serializable {
-
-	private static final long serialVersionUID = 8498056439303015886L;
-
-	@Column(name = "quantity",
-			columnDefinition = "Decimal(10,2)")
+public class FormItemReadDto extends BaseDto{
+	
 	@NotNull
+	@DecimalMin(value = "0.01")
 	private Double quantity;
 	
-	@Column(name = "measuring_unit",
-			columnDefinition = "VARCHAR(30) NOT NULL")
-	@Enumerated(EnumType.STRING)
+	@NotNull
 	private MeasuringUnit measuringUnit;
 	
-	@Column(name = "net_unit_price",
-			columnDefinition = "Decimal(10,2)")
 	@NotNull
 	private Double netUnitPrice;
-	
-	@Column(name = "net_price",
-			columnDefinition = "Decimal(10,2)")
+
 	@NotNull
 	private Double netPrice;
-	
-	@Column(name = "gross_unit_price",
-			columnDefinition = "Decimal(10,2)")
+
 	@NotNull
 	private Double grossUnitPrice;
-	
-	@Column(name = "gross_price",
-			columnDefinition = "Decimal(10,2)")
+
 	@NotNull
 	private Double grossPrice;
 	
-	@Column(name = "vat_rate",
-			columnDefinition = "Decimal(10,2) default '27.00'")
 	@NotNull
 	private Double vatRate;
-	
-	@Column(name = "vat_price",
-			columnDefinition = "Decimal(10,2)")
+
 	@NotNull
 	private Double vatPrice;
 	
-	@Column(name = "comment")
 	private String comment;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "form_ID")
-	private Form form;
+	@NotNull
+	private Integer productId;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "product_ID")
-	private Product product;
+	private String productEan;
+
+	private String itemNr;
+
+	@NotNull
+	private String productName;
 
 	public Double getQuantity() {
 		return quantity;
@@ -145,20 +116,43 @@ public class FormItem extends BaseModel implements Serializable {
 		this.comment = comment;
 	}
 
-	public Form getForm() {
-		return form;
+	public Integer getProductId() {
+		return productId;
 	}
 
-	public void setForm(Form form) {
-		this.form = form;
+	public void setProductId(Integer productId) {
+		this.productId = productId;
 	}
 
-	public Product getProduct() {
-		return product;
+	public String getProductEan() {
+		return productEan;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setProductEan(String productEan) {
+		this.productEan = productEan;
+	}
+
+	public String getItemNr() {
+		return itemNr;
+	}
+
+	public void setItemNr(String itemNr) {
+		this.itemNr = itemNr;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	@Override
+	public String toString() {
+		return "FormItemDto [quantity=" + quantity + ", netUnitPrice=" + netUnitPrice + ", netPrice=" + netPrice
+				+ ", grossUnitPrice=" + grossUnitPrice + ", grossPrice=" + grossPrice + ", vatRate=" + vatRate
+				+ ", vatPrice=" + vatPrice + ", comment=" + comment + ", productId=" + productId + "]";
 	}
 	
 }
