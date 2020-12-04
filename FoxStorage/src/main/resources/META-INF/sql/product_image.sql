@@ -84,7 +84,7 @@ INSERT INTO address(zip_code, city, street, number, partner_ID) VALUES ('1112', 
 
 INSERT INTO partner(name, tax_number, bank_account_number, partner_type) VALUES ('Partner Bt.', '12345678-1-12', '12345678 12345678', 'COMPANY');
 
-INSERT INTO form(form_nr, form_type, form_status, delivery_date, payment_date, payment_type, comment, partner_ID, facility_ID) VALUES ('MEGR-00001/2020', 'ORDER', 'UNDER_EDITING', '2020-01-31', '2020-02-28', 'CASH', 'ezt nagyon jegyezd meg', '1', '1');
+INSERT INTO form(form_nr, serial_number, form_type, form_status, delivery_date, payment_date, payment_type, comment, partner_ID, facility_ID) VALUES ('MEGR-00001/2020', '1', 'ORDER', 'UNDER_EDITING', '2020-01-31', '2020-02-28', 'CASH', 'ezt nagyon jegyezd meg', '1', '1');
 
 INSERT INTO form_item(quantity, measuring_unit, net_unit_price, net_price, gross_unit_price, gross_price, vat_rate, vat_price, comment, form_ID, product_ID) VALUES ('2.00', 'PIECE', '100.00', '200.00', '127.00', '254.00', '27.00', '54.00', 'ez egy megjegyzés', '1', '1');
 INSERT INTO form_item(quantity, measuring_unit, net_unit_price, net_price, gross_unit_price, gross_price, vat_rate, vat_price, comment, form_ID, product_ID) VALUES ('3.00', 'PIECE', '100.00', '300.00', '127.00', '381.00', '27.00', '81.00', 'ez kettő megjegyzés', '1', '2');

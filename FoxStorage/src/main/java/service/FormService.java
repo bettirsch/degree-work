@@ -25,4 +25,8 @@ public interface FormService {
 	List<FormHeadReadDto> getAllInvoiceForms();
 	
 	List<FormHeadReadDto> getAllInventoryMovementForms();
+
+	Integer createFormFromForm(Integer id, FormType formType);
+
+	void finishForm(Integer id);
 }

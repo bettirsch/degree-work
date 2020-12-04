@@ -21,10 +21,16 @@ public class FormRepositoryImpl extends BaseRepositoryImpl<Form> implements Form
 	}
 
 	@Override
-	public String getLastFormNrByFormType(FormType formType) {
-		Query query = getEntityManager().createNamedQuery(Form.GET_FORMNR_BY_FORMTYPE);
-		query.setParameter("formType", formType);
+	public Integer getLastSerialNumberByCurrentYear() {
+		Query query = getEntityManager().createNamedQuery(Form.GET_FORMNR_BY_MAX_SERIALNUMBER_AND_CURRENTYEAR);
 		Object result = query.getSingleResult();
-		return (result == null) ? null : (String) result;
+		return (result == null) ? null : (Integer) result;
+	}
+
+	@Override
+	public Integer countByFormNr(String formNr) {
+		Query query = getEntityManager().createNamedQuery(Form.COUNT_BY_FORMNR);
+		query.setParameter("formNr", formNr);
+		return Math.toIntExact((long) query.getSingleResult());
 	}
 }

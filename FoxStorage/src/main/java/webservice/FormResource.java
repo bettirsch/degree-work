@@ -41,7 +41,30 @@ public interface FormResource {
 		UserRoles.REGIONAL_REPRESENTATIVE})
 	public Response getForm(@PathParam("id") Integer id);
 	
-
+	// http://localhost:8080/FoxStorage/form/{id}/toShipment
+	@POST
+	@Path("/{id}/to-shipment")
+	@Secure(roleNames = {UserRoles.WAREHOUSE_EMPLOYEE,
+		UserRoles.OFFICE_MANAGER,
+		UserRoles.REGIONAL_REPRESENTATIVE})
+	public Response formToShipment(@PathParam("id") Integer id);
+	
+	// http://localhost:8080/FoxStorage/form/{id}/toInvoice
+	@POST
+	@Path("/{id}/to-invoice")
+	@Secure(roleNames = {UserRoles.WAREHOUSE_EMPLOYEE,
+		UserRoles.OFFICE_MANAGER,
+		UserRoles.REGIONAL_REPRESENTATIVE})
+	public Response formToInvoice(@PathParam("id") Integer id);
+	
+	// http://localhost:8080/FoxStorage/form/{id}/finish
+	@POST
+	@Path("/{id}/finish")
+	@Secure(roleNames = {UserRoles.WAREHOUSE_EMPLOYEE,
+		UserRoles.OFFICE_MANAGER,
+		UserRoles.REGIONAL_REPRESENTATIVE})
+	public Response finishForm(@PathParam("id") Integer id);
+	
 	// http://localhost:8080/FoxStorage/form/orders
 	@GET
 	@Path("/orders")

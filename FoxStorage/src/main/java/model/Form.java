@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,7 +17,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -28,19 +28,25 @@ import utils.enums.PaymentType;
 @Table(name = "form")
 @XmlRootElement
 @NamedQueries({@NamedQuery(name = Form.GET_ALL_BY_FORMTYPE, query = "SELECT f FROM Form f WHERE f.formType = :formType"),
-	@NamedQuery(name = Form.GET_FORMNR_BY_FORMTYPE, query = "SELECT f.formNr FROM Form f WHERE f.id IN (SELECT MAX(f1.id) FROM Form f1 WHERE f1.formType = :formType GROUP BY f.id)")	
+	@NamedQuery(name = Form.GET_FORMNR_BY_MAX_SERIALNUMBER_AND_CURRENTYEAR, query = "SELECT f.serialNumber FROM Form f WHERE f.id IN (SELECT MAX(f1.serialNumber) FROM Form f1 WHERE FUNCTION('YEAR',f1.createdTs) = FUNCTION('YEAR',CURRENT_TIMESTAMP) GROUP BY f.id)"),
+	@NamedQuery(name= Form.COUNT_BY_FORMNR, query = "SELECT COUNT(f) FROM Form f WHERE f.formNr = :formNr")
 })
 public class Form extends BaseModel implements Serializable{
 
 	private static final long serialVersionUID = 7699188108831968559L;
 	public static final String GET_ALL_BY_FORMTYPE = "Form.getAllByFormType";
-	public static final String GET_FORMNR_BY_FORMTYPE = "Form.getFormNrByFormType";
+	public static final String GET_FORMNR_BY_MAX_SERIALNUMBER_AND_CURRENTYEAR = "Form.getFormNrByMaxSerialNumberAndCurrentYear";
+	public static final String COUNT_BY_FORMNR = "Form.countByFormNr";
 	
-	@Column(name = "form_nr")
+	@Column(name = "form_nr", unique = true, updatable = false)
 	@NotNull
 	private String formNr;
 	
-	@Column(name = "form_type",
+	@Column(name = "serial_number", updatable = false)
+	@NotNull
+	private Integer serialNumber;
+	
+	@Column(name = "form_type", updatable = false,
 			columnDefinition = "VARCHAR(30) NOT NULL")
 	@Enumerated(EnumType.STRING)
 	@NotNull
@@ -67,7 +73,7 @@ public class Form extends BaseModel implements Serializable{
 	@Column(name = "comment")
 	private String comment;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "form")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "form", cascade = CascadeType.ALL)
 	private List<FormItem> formItems = new ArrayList<>();
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -77,9 +83,6 @@ public class Form extends BaseModel implements Serializable{
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "facility_ID")
 	private Facility facility;
-	
-	@Transient
-	private String prefix;
 	
 	public String getFormNr() {
 		return formNr;
@@ -161,8 +164,12 @@ public class Form extends BaseModel implements Serializable{
 		this.facility = facility;
 	}
 
-	public String getPrefix() {
-		return prefix;
+	public Integer getSerialNumber() {
+		return serialNumber;
 	}
-	
+
+	public void setSerialNumber(Integer serialNumber) {
+		this.serialNumber = serialNumber;
+	}
+
 }

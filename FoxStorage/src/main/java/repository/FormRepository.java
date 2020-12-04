@@ -10,5 +10,7 @@ public interface FormRepository extends BaseRepository<Form>{
 
 	List<Form> getAllFormByType(FormType type);
 
-	String getLastFormNrByFormType(FormType formType);
+	Integer getLastSerialNumberByCurrentYear();
+
+	Integer countByFormNr(String formNr);
 }

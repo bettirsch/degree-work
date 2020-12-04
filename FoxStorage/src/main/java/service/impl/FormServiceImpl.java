@@ -16,7 +16,9 @@ import model.FormItem;
 import repository.FormRepository;
 import service.FormService;
 import service.impl.formServiceDelegate.FormCreateDelegate;
+import service.impl.formServiceDelegate.FormCreateFromFormDelegate;
 import service.impl.formServiceDelegate.FormItemDelegate;
+import service.impl.formServiceDelegate.InventoryItemDelegate;
 import service.util.BaseServiceImpl;
 import utils.enums.FormStatus;
 import utils.enums.FormType;
@@ -34,7 +36,13 @@ public class FormServiceImpl extends BaseServiceImpl implements FormService {
 	
 	@Inject
 	private FormCreateDelegate formCreateDelegate;
-
+	
+	@Inject
+	private FormCreateFromFormDelegate formCreateFromFormDelegate;
+	
+	@Inject
+	private InventoryItemDelegate inventoryItemDelegate;
+	
 	@Override
 	public Integer createForm(FormHeadWriteDto dto, FormType formType) throws RuntimeException {
 		try {
@@ -47,10 +55,7 @@ public class FormServiceImpl extends BaseServiceImpl implements FormService {
 
 	@Override
 	public Integer addFormItemToForm(Integer formId, FormItemWriteDto formItemDto) throws RuntimeException {
-		Form form = formRepository.find(formId);
-		if (form == null) {
-			throw new RuntimeException("A form nem található az adatbázisban ezzel az id-val:" + formId);
-		}
+		Form form = findFormById(formId);
 		if (FormStatus.FINISHED.equals(form.getFormStatus())) {
 			throw new RuntimeException("Befejezett form-ot nem lehet módosítani!");
 		}
@@ -64,10 +69,7 @@ public class FormServiceImpl extends BaseServiceImpl implements FormService {
 
 	@Override
 	public void removeFormItemFromForm(Integer formId, Integer formItemId) throws RuntimeException {
-		Form form = formRepository.find(formId);
-		if (form == null) {
-			throw new RuntimeException("A form nem található az adatbázisban ezzel az id-val:" + formId);
-		}
+		Form form = findFormById(formId);
 		if (FormStatus.FINISHED.equals(form.getFormStatus())) {
 			throw new RuntimeException("Befejezett form-ot nem lehet módosítani!");
 		}
@@ -76,10 +78,7 @@ public class FormServiceImpl extends BaseServiceImpl implements FormService {
 
 	@Override
 	public FormDto getForm(Integer formId) throws RuntimeException {
-		Form form = formRepository.find(formId);
-		if (form == null) {
-			throw new RuntimeException("A form nem található az adatbázisban ezzel az id-val:" + formId);
-		}
+		Form form = findFormById(formId);
 		FormHeadReadDto formHead = getMapper().convert(form);
 		List<FormItemReadDto> formItemDtos = new ArrayList<>();
 		form.getFormItems().stream().forEach(formItemEntity -> {
@@ -117,4 +116,43 @@ public class FormServiceImpl extends BaseServiceImpl implements FormService {
 		return dtoList;
 	}
 
+	@Override
+	public Integer createFormFromForm(Integer formId, FormType formType) {
+		Form form = findFormById(formId);
+		if (!FormStatus.FINISHED.equals(form.getFormStatus())) {
+			throw new RuntimeException("Csak lezárt formból hozható létre "+formType.getFormType()+"!");
+		}
+		formCreateFromFormDelegate.createFormFromForm(form, formType);
+		return null;
+	}
+
+	@Override
+	public void finishForm(Integer formId) {
+		Form form = findFormById(formId);
+		if (FormStatus.FINISHED.equals(form.getFormStatus())) {
+			throw new RuntimeException("A form már lezárásra került!");
+		}
+		if (form.getFormItems().isEmpty()) {
+			throw new RuntimeException("Üres form nem zárható le!");
+		}
+		if (FormType.SHIPMENT.equals(form.getFormType()) || FormType.INVOICE.equals(form.getFormType())) {
+			for (FormItem formItem : form.getFormItems()) {
+				inventoryItemDelegate.removeQuantity(form.getFacility(), formItem.getProduct(), formItem.getQuantity());	
+			}
+		}else if(FormType.INVENTORY_MOVEMENT.equals(form.getFormType())) {
+			for (FormItem formItem : form.getFormItems()) {
+				inventoryItemDelegate.addQuantity(form.getFacility(), formItem.getProduct(), formItem.getQuantity());	
+			}
+		}
+		form.setFormStatus(FormStatus.FINISHED);
+		formRepository.update(form);
+	}
+	
+	private Form findFormById(Integer formId) {
+		Form form = formRepository.find(formId);
+		if (form == null) {
+			throw new RuntimeException("A form nem található az adatbázisban ezzel az id-val:" + formId);
+		}
+		return form;
+	}
 }

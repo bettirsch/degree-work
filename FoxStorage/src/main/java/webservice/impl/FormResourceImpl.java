@@ -118,4 +118,31 @@ public class FormResourceImpl implements FormResource{
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
 		}
 	}
+
+	@Override
+	public Response formToShipment(Integer id) {
+		return createFormFromForm(id, FormType.SHIPMENT);
+	}
+
+	@Override
+	public Response formToInvoice(Integer id) {
+		return createFormFromForm(id, FormType.INVOICE);
+	}
+	private Response createFormFromForm(Integer id, FormType formType) {
+		try {
+			Integer formId = formService.createFormFromForm(id, formType);
+			return Response.status(Response.Status.OK).entity(formId).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+		}
+	}
+	@Override
+	public Response finishForm(Integer id) {
+		try {
+			formService.finishForm(id);
+			return Response.status(Response.Status.OK).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+		}
+	}
 }

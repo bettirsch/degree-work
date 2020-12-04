@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import model.Form;
 import model.FormItem;
 import repository.FormItemRepository;
+import utils.enums.FormType;
 import utils.logger.Loggable;
 
 @Loggable
@@ -31,11 +32,10 @@ public class FormItemDelegate {
 
 		FormItem formItemToSavingWithPrice = calculatePrice(formItemToSaving);
 		if (newFormItem) {
-			createFormItem(form, formItemToSavingWithPrice);
+			return createFormItem(form, formItemToSavingWithPrice);
 		} else {
-			updateFormItem(form, formItemToSavingWithPrice);
+			return updateFormItem(form, formItemToSavingWithPrice);
 		}
-		return null;
 	}
 
 	private FormItem calculatePrice(FormItem formItem) {
@@ -53,21 +53,24 @@ public class FormItemDelegate {
 	}
 
 	private Integer createFormItem(Form form, FormItem formItem) throws RuntimeException {
-		FormItem savedFormItem = null;
-		inventoryItemDelegate.reserveQuantity(form.getFacility(), formItem.getProduct(), formItem.getQuantity());
+		if (!FormType.INVENTORY_MOVEMENT.equals(form.getFormType())) {
+			inventoryItemDelegate.reserveQuantity(form.getFacility(), formItem.getProduct(), formItem.getQuantity());
+		}
 		try {
 			formItem.setForm(form);
-			savedFormItem = formItemRepo.create(formItem);
+			FormItem savedFormItem = formItemRepo.create(formItem);
+			return savedFormItem.getId();
 		} catch (Exception e) {
 			throw new RuntimeException("Nem sikerült a formItem-et adatbázisba menteni!");
 		}
-		return savedFormItem.getId();
 	}
 
 	private Integer updateFormItem(Form form, FormItem formItem) throws RuntimeException {
 		FormItem findedFormItem = formItemRepo.find(formItem.getId());
-		Double quantityDifference = formItem.getQuantity() - findedFormItem.getQuantity();
-		inventoryItemDelegate.reserveQuantity(form.getFacility(), formItem.getProduct(), quantityDifference);
+		if (!FormType.INVENTORY_MOVEMENT.equals(form.getFormType())) {
+			Double quantityDifference = formItem.getQuantity() - findedFormItem.getQuantity();
+			inventoryItemDelegate.reserveQuantity(form.getFacility(), formItem.getProduct(), quantityDifference);
+		}
 		try {
 			findedFormItem.setQuantity(formItem.getQuantity());
 			findedFormItem.setProduct(formItem.getProduct());
@@ -79,10 +82,10 @@ public class FormItemDelegate {
 			findedFormItem.setVatPrice(formItem.getVatPrice());
 			findedFormItem.setVatRate(formItem.getVatRate());
 			formItemRepo.update(findedFormItem);
+			return findedFormItem.getId();
 		} catch (Exception e) {
 			throw new RuntimeException("Nem sikerült a formItem-et frissíteni!");
 		}
-		return null;
 	}
 
 	public void removeFormItem(Form form, Integer formItemId) throws RuntimeException {
