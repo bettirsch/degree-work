@@ -41,33 +41,35 @@ public interface FormResource {
 		UserRoles.REGIONAL_REPRESENTATIVE})
 	public Response getForm(@PathParam("id") Integer id);
 	
-	// http://localhost:8080/FoxStorage/form/{id}/toShipment
+	// http://localhost:8080/FoxStorage/form/{id}/to-shipment
 	@POST
 	@Path("/{id}/to-shipment")
 	@Secure(roleNames = {UserRoles.WAREHOUSE_EMPLOYEE,
-		UserRoles.OFFICE_MANAGER,
-		UserRoles.REGIONAL_REPRESENTATIVE})
+		UserRoles.OFFICE_MANAGER})
 	public Response formToShipment(@PathParam("id") Integer id);
 	
-	// http://localhost:8080/FoxStorage/form/{id}/toInvoice
+	// http://localhost:8080/FoxStorage/form/{id}/to-invoice
 	@POST
 	@Path("/{id}/to-invoice")
-	@Secure(roleNames = {UserRoles.WAREHOUSE_EMPLOYEE,
-		UserRoles.OFFICE_MANAGER,
-		UserRoles.REGIONAL_REPRESENTATIVE})
+	@Secure(roleNames = {UserRoles.OFFICE_MANAGER})
 	public Response formToInvoice(@PathParam("id") Integer id);
 	
-	// http://localhost:8080/FoxStorage/form/{id}/finish
+	// http://localhost:8080/FoxStorage/form/order/{id}/finish
 	@POST
-	@Path("/{id}/finish")
+	@Path("/order/{id}/finish")
+	@Secure(roleNames = {UserRoles.REGIONAL_REPRESENTATIVE})
+	public Response finishOrder(@PathParam("id") Integer id);
+	
+	// http://localhost:8080/FoxStorage/form/shipment/{id}/finish
+	@POST
+	@Path("/shipment/{id}/finish")
 	@Secure(roleNames = {UserRoles.WAREHOUSE_EMPLOYEE,
-		UserRoles.OFFICE_MANAGER,
-		UserRoles.REGIONAL_REPRESENTATIVE})
-	public Response finishForm(@PathParam("id") Integer id);
+			UserRoles.OFFICE_MANAGER})
+	public Response finishShipment(@PathParam("id") Integer id);
 	
 	// http://localhost:8080/FoxStorage/form/orders
 	@GET
-	@Path("/orders")
+	@Path("/order")
 	@Secure(roleNames = {UserRoles.WAREHOUSE_EMPLOYEE,
 		UserRoles.OFFICE_MANAGER,
 		UserRoles.REGIONAL_REPRESENTATIVE})
@@ -75,13 +77,13 @@ public interface FormResource {
 	
 	// http://localhost:8080/FoxStorage/form/orders
 	@POST
-	@Path("/orders")
+	@Path("/order")
 	@Secure(roleNames = {UserRoles.REGIONAL_REPRESENTATIVE})
 	public Response createOrderForm(@Valid FormHeadWriteDto formHeadDto);
 
 	// http://localhost:8080/FoxStorage/form/shipments
 	@GET
-	@Path("/shipments")
+	@Path("/shipment")
 	@Secure(roleNames = {UserRoles.WAREHOUSE_EMPLOYEE,
 		UserRoles.OFFICE_MANAGER,
 		UserRoles.REGIONAL_REPRESENTATIVE})
@@ -89,13 +91,14 @@ public interface FormResource {
 	
 	// http://localhost:8080/FoxStorage/form/shipments
 	@POST
-	@Path("/shipments")
-	@Secure(roleNames = {UserRoles.REGIONAL_REPRESENTATIVE})
+	@Path("/shipment")
+	@Secure(roleNames = {UserRoles.WAREHOUSE_EMPLOYEE,
+			UserRoles.OFFICE_MANAGER})
 	public Response createShipmentForm(@Valid FormHeadWriteDto formHeadDto);
 
 	// http://localhost:8080/FoxStorage/form/invoices
 	@GET
-	@Path("/invoices")
+	@Path("/invoice")
 	@Secure(roleNames = {UserRoles.WAREHOUSE_EMPLOYEE,
 		UserRoles.OFFICE_MANAGER,
 		UserRoles.REGIONAL_REPRESENTATIVE})
@@ -103,13 +106,13 @@ public interface FormResource {
 
 	// http://localhost:8080/FoxStorage/form/invoices
 	@POST
-	@Path("/invoices")
-	@Secure(roleNames = {UserRoles.REGIONAL_REPRESENTATIVE})
+	@Path("/invoice")
+	@Secure(roleNames = {UserRoles.OFFICE_MANAGER})
 	public Response createInvoiceForm(@Valid FormHeadWriteDto formHeadDto);
 	
 	// http://localhost:8080/FoxStorage/form/inventory-movements
 	@GET
-	@Path("/inventory-movements")
+	@Path("/inventory-movement")
 	@Secure(roleNames = {UserRoles.WAREHOUSE_EMPLOYEE,
 		UserRoles.OFFICE_MANAGER,
 		UserRoles.REGIONAL_REPRESENTATIVE})
@@ -117,7 +120,8 @@ public interface FormResource {
 	
 	// http://localhost:8080/FoxStorage/form/inventory-movements
 	@POST
-	@Path("/inventory-movements")
-	@Secure(roleNames = {UserRoles.REGIONAL_REPRESENTATIVE})
+	@Path("/inventory-movement")
+	@Secure(roleNames = {UserRoles.WAREHOUSE_EMPLOYEE,
+			UserRoles.OFFICE_MANAGER})
 	public Response createInventoryMovementForm(@Valid FormHeadWriteDto formHeadDto);
 }

@@ -135,7 +135,7 @@ public class FormServiceImpl extends BaseServiceImpl implements FormService {
 		if (form.getFormItems().isEmpty()) {
 			throw new RuntimeException("Üres form nem zárható le!");
 		}
-		if (FormType.SHIPMENT.equals(form.getFormType()) || FormType.INVOICE.equals(form.getFormType())) {
+		if (FormType.SHIPMENT.equals(form.getFormType())) {
 			for (FormItem formItem : form.getFormItems()) {
 				inventoryItemDelegate.removeQuantity(form.getFacility(), formItem.getProduct(), formItem.getQuantity());	
 			}

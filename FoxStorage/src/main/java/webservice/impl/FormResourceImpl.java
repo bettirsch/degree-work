@@ -136,8 +136,18 @@ public class FormResourceImpl implements FormResource{
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
 		}
 	}
+
 	@Override
-	public Response finishForm(Integer id) {
+	public Response finishOrder(Integer id) {
+		return finishForm(id);
+	}
+
+	@Override
+	public Response finishShipment(Integer id) {
+		return finishForm(id);
+	}
+	
+	private Response finishForm(Integer id) {
 		try {
 			formService.finishForm(id);
 			return Response.status(Response.Status.OK).build();
