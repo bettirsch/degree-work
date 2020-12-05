@@ -7,12 +7,16 @@ package model;
 
 import java.io.Serializable;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -29,14 +33,25 @@ import utils.enums.MeasuringUnit;
 @Entity
 @Table(name = "product")
 @XmlRootElement
+@NamedQueries({
+	@NamedQuery(name = Product.COUNT_BY_EAN_EXCEPT_THIS_ID, query = "SELECT COUNT(p) FROM Product p WHERE p.productEan = :productEan AND p.id <> :id"),
+	@NamedQuery(name = Product.COUNT_BY_NAME_EXCEPT_THIS_ID, query = "SELECT COUNT(p) FROM Product p WHERE p.productName = :productName AND p.id <> :id"),
+	@NamedQuery(name = Product.COUNT_BY_ITEMNR_EXCEPT_THIS_ID, query = "SELECT COUNT(p) FROM Product p WHERE p.itemNr = :itemNr AND p.id <> :id")
+})
 public class Product extends BaseModel implements Serializable{
     
 	private static final long serialVersionUID = 1103355133966318506L;
 
-    @Column(name = "product_ean")
+	public static final String COUNT_BY_NAME_EXCEPT_THIS_ID = "Product.countByNameExceptThisId";
+
+	public static final String COUNT_BY_EAN_EXCEPT_THIS_ID = "Product.countByEanExceptThisId";
+
+	public static final String COUNT_BY_ITEMNR_EXCEPT_THIS_ID = "Product.countByItemNrExceptThisId";
+
+    @Column(name = "product_ean", unique = true)
     private String productEan;
     
-    @Column(name = "item_nr")
+    @Column(name = "item_nr", unique = true)
     private String itemNr;
 
     @Column(name = "product_name")
@@ -48,7 +63,7 @@ public class Product extends BaseModel implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private MeasuringUnit baseMeasuringUnit;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "base_price_id")
 	private Price basePrice;
 	

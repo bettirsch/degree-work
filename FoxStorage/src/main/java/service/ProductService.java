@@ -11,4 +11,8 @@ public interface ProductService {
 	List<ProductDto> getAllProduct();
 
 	Integer createProduct(ProductDto dto);
+
+	ProductDto updateProduct(Integer id, ProductDto dto);
+
+	void softDeleteProduct(Integer id);
 }

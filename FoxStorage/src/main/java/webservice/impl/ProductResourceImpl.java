@@ -22,7 +22,7 @@ public class ProductResourceImpl implements ProductResource{
 			List<ProductDto> productDtos = productService.getAllProduct();
 			return Response.status(Response.Status.OK).entity(productDtos).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Err").build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
 		}
 	}
 
@@ -32,7 +32,7 @@ public class ProductResourceImpl implements ProductResource{
 			Integer createdProductId = productService.createProduct(dto);
 			return Response.status(Response.Status.OK).entity(createdProductId).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Err").build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
 		}
 	}
 
@@ -42,7 +42,27 @@ public class ProductResourceImpl implements ProductResource{
 			ProductDto findedProductDto = productService.getProduct(id);
 			return Response.status(Response.Status.OK).entity(findedProductDto).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Err").build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+		}
+	}
+
+	@Override
+	public Response updateProduct(Integer id, ProductDto dto) {
+		try {
+			ProductDto updatedProductDto = productService.updateProduct(id, dto);
+			return Response.status(Response.Status.OK).entity(updatedProductDto).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
+		}
+	}
+
+	@Override
+	public Response deleteProduct(Integer id) {
+		try {
+			productService.softDeleteProduct(id);
+			return Response.status(Response.Status.OK).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).build();
 		}
 	}
 
