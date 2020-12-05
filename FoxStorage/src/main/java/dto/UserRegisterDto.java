@@ -3,7 +3,7 @@ package dto;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class UserDtoRegister extends BaseDto {
+public class UserRegisterDto extends BaseDto {
 
 	@NotNull
 	private String username;

@@ -6,7 +6,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
 
-import dto.UserDtoRegister;
+import dto.UserRegisterDto;
 import model.Role;
 import model.User;
 import repository.RoleRepository;
@@ -24,8 +24,8 @@ public class UserServiceTest {
 	protected RoleRepository roleRepository = Mockito.mock(RoleRepository.class);
 
 	protected User userEntity;
-	protected UserDtoRegister userDtoRegister;
-	protected UserDtoRegister userDtoRegisterWithInvalidEmail;
+	protected UserRegisterDto userDtoRegister;
+	protected UserRegisterDto userDtoRegisterWithInvalidEmail;
 	protected Role visitorRole;
 	
 	protected final static String EMAIL = "email@email.com";
@@ -67,8 +67,8 @@ public class UserServiceTest {
 		return role;
 	}
 	
-	private UserDtoRegister setUserDtoRegister(String email) {
-		UserDtoRegister userDtoRegister = new UserDtoRegister();
+	private UserRegisterDto setUserDtoRegister(String email) {
+		UserRegisterDto userDtoRegister = new UserRegisterDto();
 		userDtoRegister.setEmail(email);
 		userDtoRegister.setPassword(PASSWORD);
 		userDtoRegister.setUsername(USERNAME);

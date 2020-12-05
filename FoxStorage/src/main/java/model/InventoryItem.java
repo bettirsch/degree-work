@@ -18,12 +18,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
 		@NamedQuery(name = InventoryItem.GET_BY_FACILITY_AND_PRODUCT,
-				query = "SELECT i FROM InventoryItem i WHERE i.facility = :facility AND i.product = :product") })
+				query = "SELECT i FROM InventoryItem i WHERE i.facility = :facility AND i.product = :product"),
+		@NamedQuery(name = InventoryItem.GET_BY_FACILITY_ID,
+		query = "SELECT i FROM InventoryItem i WHERE i.facility.id = :facilityId"),
+		@NamedQuery(name = InventoryItem.GET_BY_PRODUCT_ID,
+		query = "SELECT i FROM InventoryItem i WHERE i.product.id = :productId")})
 public class InventoryItem extends BaseModel implements Serializable {
 
 	private static final long serialVersionUID = -7267115789362192642L;
 
 	public static final String GET_BY_FACILITY_AND_PRODUCT = "InventoryItem.getByFacilityAndProduct";
+
+	public static final String GET_BY_PRODUCT_ID = "InventoryItem.getByProductId";
+
+	public static final String GET_BY_FACILITY_ID = "InventoryItem.getByFacilityId";
 
 	@Column(name = "quantity", columnDefinition = "Decimal(10,2) NOT NULL default '0.00'")
 	@NotNull

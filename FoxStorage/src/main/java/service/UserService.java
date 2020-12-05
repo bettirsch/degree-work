@@ -2,15 +2,18 @@ package service;
 
 import java.util.List;
 
-import dto.UserDto;
-import dto.UserDtoRegister;
+import dto.UserReadDto;
+import dto.UserRegisterDto;
+import dto.UserWriteDto;
 
 public interface UserService {
 
 	String validateUser(String email, String password) throws RuntimeException;
 	
-	String registerUser(UserDtoRegister userDto) throws RuntimeException;
+	String registerUser(UserRegisterDto userDto) throws RuntimeException;
 	
-	List<UserDto> getAllUser();
+	List<UserReadDto> getAllUser();
+
+	UserReadDto updateUser(UserWriteDto dto);
 	
 }

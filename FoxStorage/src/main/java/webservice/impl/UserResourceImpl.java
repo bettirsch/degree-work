@@ -8,9 +8,10 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import dto.LoginDto;
-import dto.UserDto;
-import dto.UserDtoRegister;
+import dto.UserLoginDto;
+import dto.UserReadDto;
+import dto.UserRegisterDto;
+import dto.UserWriteDto;
 import service.UserService;
 import webservice.UserResource;
 
@@ -21,7 +22,7 @@ public class UserResourceImpl implements UserResource{
 	private UserService userService;
 	
 	@Override
-	public Response registerUser(UserDtoRegister userDto) {
+	public Response registerUser(UserRegisterDto userDto) {
 		try {
 			String token = userService.registerUser(userDto);
 			return Response.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + token).build();
@@ -31,7 +32,7 @@ public class UserResourceImpl implements UserResource{
 	}
 
 	@Override
-	public Response loginUser(LoginDto loginDto) {
+	public Response loginUser(UserLoginDto loginDto) {
 		try {
 			String token = userService.validateUser(loginDto.getEmail(), loginDto.getPassword());
 			return Response.ok().header("AUTHORIZATION", "Bearer " + token).build();
@@ -43,8 +44,18 @@ public class UserResourceImpl implements UserResource{
 	@Override
 	public Response allUser() {
 		try {
-			List<UserDto> users = userService.getAllUser();
+			List<UserReadDto> users = userService.getAllUser();
 			return Response.ok().entity(users).build();
+		} catch (Exception e) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+		}
+	}
+
+	@Override
+	public Response updateUser(UserWriteDto dto) {
+		try {
+			UserReadDto updatedUser = userService.updateUser(dto);
+			return Response.ok().entity(updatedUser).build();
 		} catch (Exception e) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
 		}

@@ -2,7 +2,7 @@ package dto;
 
 import javax.validation.constraints.NotNull;
 
-public class LoginDto {
+public class UserLoginDto {
 
 	@NotNull
 	private String email;

@@ -8,7 +8,7 @@ import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import dto.UserDtoRegister;
+import dto.UserRegisterDto;
 import utils.enums.UserRoles;
 
 public class TestRegister extends UserServiceTest {
@@ -36,7 +36,7 @@ public class TestRegister extends UserServiceTest {
 		});
 	}
 
-	private String registerUser(int countedEmails, UserDtoRegister userDtoRegister) {
+	private String registerUser(int countedEmails, UserRegisterDto userDtoRegister) {
 		when(userRepository.getCountByEmail(EMAIL)).thenReturn(new Long(countedEmails));
 		when(mapper.convert(userDtoRegister)).thenReturn(userEntity);
 		when(userRepository.create(userEntity)).thenReturn(userEntity);

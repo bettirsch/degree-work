@@ -13,8 +13,9 @@ import javax.transaction.Transactional;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import dto.UserDto;
-import dto.UserDtoRegister;
+import dto.UserReadDto;
+import dto.UserRegisterDto;
+import dto.UserWriteDto;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import model.Role;
@@ -49,9 +50,9 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<UserDto> getAllUser() {
+	public List<UserReadDto> getAllUser() {
 		List<User> entityList = userRepository.findAll();
-		List<UserDto> dtoList = new ArrayList<>();
+		List<UserReadDto> dtoList = new ArrayList<>();
 		entityList.stream().forEach(entity -> {
 			dtoList.add(getMapper().convert(entity));
 		});
@@ -69,7 +70,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	}
 
 	@Override
-	public String registerUser(UserDtoRegister userDto) throws RuntimeException {
+	public String registerUser(UserRegisterDto userDto) throws RuntimeException {
 		userDto.setEmail(validateAndLowerCaseEmail(userDto.getEmail()));
 		String hashedPassword = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt(10));
 		userDto.setPassword(hashedPassword);
@@ -120,5 +121,28 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 			roles += role.getRoleName() + ";";
 		}
 		return roles;
+	}
+
+	@Override
+	public UserReadDto updateUser(UserWriteDto dto) {
+		User updatableUser = userRepository.find(dto.getId());
+		if (updatableUser == null) {
+			throw new RuntimeException("A felhasználó nem található az adatbázisban!");
+		}
+		updatableUser.setFirstName(dto.getFirstName());
+		updatableUser.setMiddleName(dto.getMiddleName());
+		updatableUser.setLastName(dto.getLastName());
+		List<Role> roles = new ArrayList<>();
+		for (UserRoles roleName : dto.getRoles()) {
+			Role findedRole = roleRepository.findByRoleName(roleName);
+			if (findedRole != null) {
+				roles.add(findedRole);
+			}
+		}
+		if (!roles.isEmpty()) {
+			updatableUser.setRoles(roles);	
+		}
+		User updatedUser = userRepository.update(updatableUser);
+		return getMapper().convert(updatedUser);
 	}
 }
