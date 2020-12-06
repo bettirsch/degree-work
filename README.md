@@ -1,1 +1,0 @@
-MapStruct - plugin install to IDE! (Generated impl will in deployment)
